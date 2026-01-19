@@ -552,7 +552,7 @@
                     let existingBtn = document.querySelector(`.cert-btn[data-module="${moduleId}"]`);
                     if (!existingBtn) {
                         const certBtn = document.createElement('a');
-                        certBtn.href = `${hrefPrefix}/results.html`;
+                        certBtn.href = `${hrefPrefix}/results.html?fromCertificate=true`;
                         certBtn.className = 'cert-btn';
                         certBtn.setAttribute('data-module', moduleId);
                         certBtn.innerHTML = '🎓 Print Certificate';

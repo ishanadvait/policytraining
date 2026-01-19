@@ -417,7 +417,7 @@
             </p>
 
             <div class="action-buttons">
-                <a href="quiz.html" class="action-btn secondary">🔄 Retake Quiz</a>
+                <a href="quiz.html" class="action-btn secondary" id="retakeQuizBtn">🔄 Retake Quiz</a>
                 <button class="action-btn primary" id="certificateBtn" onclick="showCertificate()">📜 View
                     Certificate</button>
             </div>
@@ -468,6 +468,12 @@
         import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../supabase-config.js';
 
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Check if accessed from Print Certificate on completed module
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('fromCertificate') === 'true') {
+            document.getElementById('retakeQuizBtn').style.display = 'none';
+        }
 
         const score = parseInt(localStorage.getItem('dataprivacy_score') || '0');
         const passedStr = localStorage.getItem('dataprivacy_passed');
