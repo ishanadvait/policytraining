@@ -524,8 +524,8 @@
             const pill = header.querySelector('.status-pill');
             const btnLink = card.querySelector('.btn-link');
 
-            // Remove any existing certificate button
-            const existingCertBtn = card.parentElement.querySelector('.cert-btn');
+            // Remove any existing certificate button for this module
+            const existingCertBtn = document.querySelector(`.cert-btn[data-module="${moduleId}"]`);
             if (existingCertBtn) existingCertBtn.remove();
 
             if (data && data.status === 'completed') {
@@ -551,19 +551,18 @@
                     }
 
                     // Add certificate button after the card
-                    const certBtn = document.createElement('a');
-                    certBtn.href = `${hrefPrefix}/results.html`;
-                    certBtn.className = 'cert-btn';
-                    certBtn.innerHTML = '🎓 Print Certificate';
+                    // First check if one already exists for this module
+                    let existingBtn = document.querySelector(`.cert-btn[data-module="${moduleId}"]`);
+                    if (!existingBtn) {
+                        const certBtn = document.createElement('a');
+                        certBtn.href = `${hrefPrefix}/results.html`;
+                        certBtn.className = 'cert-btn';
+                        certBtn.setAttribute('data-module', moduleId);
+                        certBtn.innerHTML = '🎓 Print Certificate';
 
-                    // Wrap card if not already wrapped
-                    if (!card.parentElement.classList.contains('card-wrapper')) {
-                        const wrapper = document.createElement('div');
-                        wrapper.className = 'card-wrapper';
-                        card.parentElement.insertBefore(wrapper, card);
-                        wrapper.appendChild(card);
+                        // Insert after the card
+                        card.insertAdjacentElement('afterend', certBtn);
                     }
-                    card.parentElement.appendChild(certBtn);
                 } else {
                     // Expired - allow retake
                     card.classList.remove('completed');
