@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | Ishan Policy Training</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Styles -->
+    <link rel="stylesheet" href="login.css">
+    <!-- Supabase JS is loaded via module in script below, or we can use CDN for direct access -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+    <!-- Background Elements -->
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+
+    <div class="login-container">
+        <div class="logo-container">
+            <!-- Ensure this path is correct relative to this file. 
+                 If file is in root, TrainingPrograms is a subdir. 
+                 If logo is inside TrainingPrograms, path is 'TrainingPrograms/ishantechnologies_logo.jpeg' -->
+            <img src="TrainingPrograms/ishantechnologies_logo.jpeg" alt="Ishan Technologies">
+        </div>
+
+        <div class="login-header">
+            <h1>Compliance Training Hub</h1>
+            <p>Please sign in to access your training modules</p>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" placeholder="name@ishantechnologies.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit" class="login-btn" id="loginBtn">
+                <span>Sign In</span>
+                <div class="spinner"></div>
+            </button>
+        </form>
+
+        <div class="forgot-password">
+            <a href="#">Forgot your password?</a>
+        </div>
+    </div>
+
+    <!-- Auth Logic -->
+    <!-- We'll create a dedicated supabase-client.js, but for simplicity we can init here or link it -->
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+        import { SUPABASE_URL, SUPABASE_ANON_KEY } from './TrainingPrograms/supabase-config.js';
+
+        // Initialize Supabase
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const loginForm = document.getElementById('loginForm');
+        const loginBtn = document.getElementById('loginBtn');
+        const errorMsg = document.getElementById('errorMessage');
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Loading State
+            loginBtn.classList.add('loading');
+            errorMsg.style.display = 'none';
+            loginBtn.disabled = true;
+
+            try {
+                const { data, error } = await supabase.auth.signInWithPassword({
+                    email: email,
+                    password: password,
+                })
+
+                if (error) throw error;
+
+                if (data.user) {
+                    // Success - Save basics to local storage for our simple guard (optional, as session helps too)
+                    // But Supabase session persistence handles most of it.
+                    // Redirect
+                    window.location.href = 'TrainingPrograms/index.html';
+                }
+
+            } catch (error) {
+                console.error('Login Error:', error);
+                errorMsg.textContent = error.message || 'Invalid login credentials.';
+                errorMsg.style.display = 'block';
+            } finally {
+                loginBtn.classList.remove('loading');
+                loginBtn.disabled = false;
+            }
+        });
+    </script>
+</body>
+
+</html>

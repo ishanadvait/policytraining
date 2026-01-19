@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Quiz | POSH Training</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Rubik:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: block;
+        }
+
+        .quiz-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ed 100%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quiz-header-bar {
+            background: linear-gradient(135deg, #9d174d 0%, #be185d 100%);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-header-bar img {
+            height: 50px;
+        }
+
+        .quiz-progress-bar {
+            width: 200px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .quiz-progress-fill {
+            height: 100%;
+            background: #f472b6;
+            transition: width 0.3s ease;
+        }
+
+        .quiz-main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .quiz-card {
+            background: white;
+            border-radius: 24px;
+            padding: 50px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-number-badge {
+            display: inline-block;
+            background: #9d174d;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            font-family: 'Raleway', sans-serif;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #9d174d;
+            line-height: 1.5;
+            margin-bottom: 35px;
+            font-family: 'Raleway', sans-serif;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 25px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option-card:hover {
+            border-color: #be185d;
+            background: #fdf2f8;
+            transform: translateX(5px);
+        }
+
+        .option-card.selected {
+            border-color: #be185d;
+            background: #fce7f3;
+        }
+
+        .option-card.correct {
+            border-color: #22c55e;
+            background: #f0fdf4;
+        }
+
+        .option-card.incorrect {
+            border-color: var(--red);
+            background: #fef2f2;
+        }
+
+        .option-letter {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--gray);
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .option-card.selected .option-letter {
+            background: #be185d;
+            border-color: #be185d;
+            color: white;
+        }
+
+        .option-card.correct .option-letter {
+            background: #22c55e;
+            border-color: #22c55e;
+            color: white;
+        }
+
+        .option-card.incorrect .option-letter {
+            background: var(--red);
+            border-color: var(--red);
+            color: white;
+        }
+
+        .option-text {
+            font-size: 1.05rem;
+            color: #1e293b;
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .quiz-nav-btn {
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Raleway', sans-serif;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quiz-nav-btn.secondary {
+            background: #f1f5f9;
+            color: var(--gray);
+        }
+
+        .quiz-nav-btn.secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .quiz-nav-btn.primary {
+            background: #be185d;
+            color: white;
+        }
+
+        .quiz-nav-btn.primary:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(190, 24, 93, 0.4);
+        }
+
+        .quiz-nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .question-slide {
+            display: none;
+        }
+
+        .question-slide.active {
+            display: block;
+        }
+
+        .feedback-message {
+            margin-top: 20px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .feedback-message.correct {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #86efac;
+            display: block;
+        }
+
+        .feedback-message.incorrect {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            display: block;
+        }
+    </style>
+
+    <!-- Auth Guard -->
+    <script type="module" src="../auth.js"></script>
+</head>
+
+<body>
+    <div class="quiz-page">
+        <div class="quiz-header-bar">
+            <img src="../ishantechnologies_logo.jpeg" alt="Ishan Technologies">
+            <div style="text-align: center;">
+                <div style="font-weight: 600; margin-bottom: 5px;">POSH Act Training</div>
+                <div style="font-size: 0.85rem; opacity: 0.8;">Assessment Quiz</div>
+            </div>
+            <div>
+                <div style="font-size: 0.85rem; margin-bottom: 5px;">Progress</div>
+                <div class="quiz-progress-bar">
+                    <div class="quiz-progress-fill" id="quizProgress" style="width: 10%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-main">
+            <div class="quiz-card">
+                <!-- Question 1 -->
+                <div class="question-slide active" data-question="1">
+                    <div class="question-number-badge">Question 1 of 10</div>
+                    <div class="question-text">What does POSH stand for?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(1, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">Protection of Sexual Harassment</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(1, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">Prevention of Sexual Harassment</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(1, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">Prohibition of Sexual Harassment</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(1, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">Punishment of Sexual Harassment</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback1"></div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-slide" data-question="2">
+                    <div class="question-number-badge">Question 2 of 10</div>
+                    <div class="question-text">How many employees must an organization have to mandate an ICC?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(2, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">5 employees</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(2, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">10 employees</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(2, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">20 employees</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(2, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">50 employees</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback2"></div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-slide" data-question="3">
+                    <div class="question-number-badge">Question 3 of 10</div>
+                    <div class="question-text">Who should be the Presiding Officer of the ICC?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(3, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">Any employee</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(3, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">A woman employed at a senior level</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(3, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">An external legal expert</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(3, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">The HR Head</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback3"></div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-slide" data-question="4">
+                    <div class="question-number-badge">Question 4 of 10</div>
+                    <div class="question-text">What is the time limit for filing a complaint?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(4, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">1 month from incident</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(4, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">3 months from incident</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(4, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">6 months from incident</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(4, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">1 year from incident</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback4"></div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-slide" data-question="5">
+                    <div class="question-number-badge">Question 5 of 10</div>
+                    <div class="question-text">Within how many days must the inquiry be completed?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(5, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">30 days</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(5, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">60 days</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(5, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">90 days</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(5, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">180 days</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback5"></div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question-slide" data-question="6">
+                    <div class="question-number-badge">Question 6 of 10</div>
+                    <div class="question-text">What is "Quid Pro Quo" harassment?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(6, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">Making offensive jokes</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(6, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">Promising benefits or threatening consequences in exchange for
+                                sexual favors</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(6, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">Staring or leering</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(6, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">Sending unwanted emails</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback6"></div>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question-slide" data-question="7">
+                    <div class="question-number-badge">Question 7 of 10</div>
+                    <div class="question-text">Can conciliation involve monetary settlement?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(7, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">Yes, any amount</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(7, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">Yes, up to 3 months salary</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(7, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">No, conciliation cannot involve monetary settlement</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(7, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">Only if respondent agrees</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback7"></div>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question-slide" data-question="8">
+                    <div class="question-number-badge">Question 8 of 10</div>
+                    <div class="question-text">What is the penalty for employer's first non-compliance with POSH Act?
+                    </div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(8, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">Up to INR 10,000</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(8, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">Up to INR 25,000</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(8, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">Up to INR 50,000</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(8, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">Up to INR 1,00,000</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback8"></div>
+                </div>
+
+                <!-- Question 9 -->
+                <div class="question-slide" data-question="9">
+                    <div class="question-number-badge">Question 9 of 10</div>
+                    <div class="question-text">Does the definition of "workplace" include virtual meetings?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(9, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">No, only physical locations</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(9, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">Yes, if related to work</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(9, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">Only if employer specifically includes it</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(9, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">Only during office hours</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback9"></div>
+                </div>
+
+                <!-- Question 10 -->
+                <div class="question-slide" data-question="10">
+                    <div class="question-number-badge">Question 10 of 10</div>
+                    <div class="question-text">What percentage of ICC members must be women?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(10, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">At least 25%</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(10, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">At least 50%</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(10, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">At least 75%</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(10, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">100%</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback10"></div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="quiz-navigation">
+                    <button class="quiz-nav-btn secondary" id="prevBtn" onclick="prevQuestion()" disabled>←
+                        Previous</button>
+                    <button class="quiz-nav-btn primary" id="nextBtn" onclick="nextQuestion()" disabled>Next →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+        import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../supabase-config.js';
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const answers = {
+            1: 'b', 2: 'b', 3: 'b', 4: 'b', 5: 'c',
+            6: 'b', 7: 'c', 8: 'c', 9: 'b', 10: 'b'
+        };
+
+        const explanations = {
+            1: { correct: 'Correct! POSH stands for Prevention of Sexual Harassment.', incorrect: 'Incorrect. POSH stands for Prevention of Sexual Harassment.' },
+            2: { correct: 'Correct! Organizations with 10 or more employees must constitute an ICC.', incorrect: 'Incorrect. The threshold is 10 employees.' },
+            3: { correct: 'Correct! A woman employed at a senior level must be the Presiding Officer.', incorrect: 'Incorrect. The Presiding Officer must be a woman employed at a senior level.' },
+            4: { correct: 'Correct! Complaints must be filed within 3 months of the incident.', incorrect: 'Incorrect. The time limit is 3 months from the date of incident.' },
+            5: { correct: 'Correct! The inquiry must be completed within 90 days.', incorrect: 'Incorrect. The inquiry must be completed within 90 days.' },
+            6: { correct: 'Correct! Quid Pro Quo involves promising benefits or threatening consequences for sexual favors.', incorrect: 'Incorrect. Quid Pro Quo means "this for that" - benefits/threats in exchange for sexual favors.' },
+            7: { correct: 'Correct! Conciliation cannot involve monetary settlement under the POSH Act.', incorrect: 'Incorrect. The Act specifically prohibits monetary settlement in conciliation.' },
+            8: { correct: 'Correct! The penalty for first non-compliance is up to INR 50,000.', incorrect: 'Incorrect. The first offense penalty is up to INR 50,000.' },
+            9: { correct: 'Correct! Workplace includes any place visited during employment, including virtual meetings.', incorrect: 'Incorrect. Virtual meetings are covered if they are work-related.' },
+            10: { correct: 'Correct! At least 50% of ICC members must be women.', incorrect: 'Incorrect. The Act requires at least 50% women members in ICC.' }
+        };
+
+        let currentQuestion = 1;
+        let userAnswers = {};
+        let answered = {};
+        const totalQuestions = 10;
+
+        function selectAnswer(questionNum, answer, element) {
+            if (answered[questionNum]) return; // Prevent re-answering
+
+            // Mark as answered
+            answered[questionNum] = true;
+            userAnswers[questionNum] = answer;
+
+            // Clear previous selections
+            const options = element.parentElement.querySelectorAll('.option-card');
+            options.forEach(opt => opt.classList.remove('selected'));
+
+            // Show correct/incorrect
+            const isCorrect = answer === answers[questionNum];
+            element.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+            // Highlight correct answer if wrong
+            if (!isCorrect) {
+                options.forEach(opt => {
+                    const letter = opt.querySelector('.option-letter').textContent.toLowerCase();
+                    if (letter === answers[questionNum]) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            // Show feedback
+            const feedback = document.getElementById('feedback' + questionNum);
+            feedback.textContent = isCorrect ? explanations[questionNum].correct : explanations[questionNum].incorrect;
+            feedback.className = 'feedback-message ' + (isCorrect ? 'correct' : 'incorrect');
+
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+                currentQuestion++;
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+                updateNavigation();
+            } else {
+                // Submit and show results
+                showResults();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+                currentQuestion--;
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+                updateNavigation();
+            }
+        }
+
+        function updateNavigation() {
+            document.getElementById('prevBtn').disabled = currentQuestion === 1;
+            document.getElementById('nextBtn').disabled = !answered[currentQuestion];
+            document.getElementById('nextBtn').textContent = currentQuestion === totalQuestions ? 'Submit Quiz →' : 'Next →';
+            document.getElementById('quizProgress').style.width = (currentQuestion / totalQuestions * 100) + '%';
+        }
+
+        async function showResults() {
+            let score = 0;
+            for (let q in answers) {
+                if (userAnswers[q] === answers[q]) score++;
+            }
+
+            const passed = score >= 7; // 70% passing
+
+            // Store results
+            localStorage.setItem('posh_score', score);
+            localStorage.setItem('posh_passed', passed);
+            localStorage.setItem('posh_date', new Date().toISOString());
+
+            // Save to Supabase
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    const percentageScore = score * 10;
+                    const { error } = await supabase.from('user_progress').upsert({
+                        user_id: user.id,
+                        module_id: 'posh',
+                        status: passed ? 'completed' : 'failed',
+                        score: percentageScore,
+                        completed_at: new Date().toISOString()
+                    }, { onConflict: 'user_id,module_id' });
+
+                    if (error) {
+                        console.error('Error saving progress:', error);
+                    }
+                }
+            } catch (err) {
+                console.error('Error saving to Supabase:', err);
+            }
+
+            // Redirect to results page
+            window.location.href = 'results.html';
+        }
+
+        // Expose functions to global scope for onclick handlers
+        window.selectAnswer = selectAnswer;
+        window.nextQuestion = nextQuestion;
+        window.prevQuestion = prevQuestion;
+
+        updateNavigation();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assessment Quiz | Data Privacy Training</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;600;700;800&family=Rubik:wght@400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: block;
+        }
+
+        .quiz-page {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8ed 100%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .quiz-header-bar {
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-header-bar img {
+            height: 50px;
+        }
+
+        .quiz-progress-bar {
+            width: 200px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .quiz-progress-fill {
+            height: 100%;
+            background: #a5b4fc;
+            transition: width 0.3s ease;
+        }
+
+        .quiz-main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .quiz-card {
+            background: white;
+            border-radius: 24px;
+            padding: 50px;
+            max-width: 700px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-number-badge {
+            display: inline-block;
+            background: #4f46e5;
+            color: white;
+            padding: 10px 25px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 25px;
+            font-family: 'Raleway', sans-serif;
+        }
+
+        .question-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #4f46e5;
+            line-height: 1.5;
+            margin-bottom: 35px;
+            font-family: 'Raleway', sans-serif;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .option-card {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 20px 25px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option-card:hover {
+            border-color: #6366f1;
+            background: #eef2ff;
+            transform: translateX(5px);
+        }
+
+        .option-card.selected {
+            border-color: #6366f1;
+            background: #e0e7ff;
+        }
+
+        .option-card.correct {
+            border-color: #22c55e;
+            background: #f0fdf4;
+        }
+
+        .option-card.incorrect {
+            border-color: #ef4444;
+            background: #fef2f2;
+        }
+
+        .option-letter {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #64748b;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .option-card.selected .option-letter {
+            background: #6366f1;
+            border-color: #6366f1;
+            color: white;
+        }
+
+        .option-card.correct .option-letter {
+            background: #22c55e;
+            border-color: #22c55e;
+            color: white;
+        }
+
+        .option-card.incorrect .option-letter {
+            background: #ef4444;
+            border-color: #ef4444;
+            color: white;
+        }
+
+        .option-text {
+            font-size: 1.05rem;
+            color: #1e293b;
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .quiz-nav-btn {
+            padding: 15px 30px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 1rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Raleway', sans-serif;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .quiz-nav-btn.secondary {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .quiz-nav-btn.secondary:hover {
+            background: #e2e8f0;
+        }
+
+        .quiz-nav-btn.primary {
+            background: #6366f1;
+            color: white;
+        }
+
+        .quiz-nav-btn.primary:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .quiz-nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .question-slide {
+            display: none;
+        }
+
+        .question-slide.active {
+            display: block;
+        }
+
+        .feedback-message {
+            margin-top: 20px;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-weight: 500;
+            display: none;
+        }
+
+        .feedback-message.correct {
+            background: #f0fdf4;
+            color: #166534;
+            border: 1px solid #86efac;
+            display: block;
+        }
+
+        .feedback-message.incorrect {
+            background: #fef2f2;
+            color: #991b1b;
+            border: 1px solid #fca5a5;
+            display: block;
+        }
+    </style>
+
+    <!-- Auth Guard -->
+    <script type="module" src="../auth.js"></script>
+</head>
+
+<body>
+    <div class="quiz-page">
+        <div class="quiz-header-bar">
+            <img src="../ishantechnologies_logo.jpeg" alt="Ishan Technologies">
+            <div style="text-align: center;">
+                <div style="font-weight: 600; margin-bottom: 5px;">Data Privacy Training</div>
+                <div style="font-size: 0.85rem; opacity: 0.8;">Assessment Quiz</div>
+            </div>
+            <div>
+                <div style="font-size: 0.85rem; margin-bottom: 5px;">Progress</div>
+                <div class="quiz-progress-bar">
+                    <div class="quiz-progress-fill" id="quizProgress" style="width: 10%;"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-main">
+            <div class="quiz-card">
+                <!-- Question 1 -->
+                <div class="question-slide active" data-question="1">
+                    <div class="question-number-badge">Question 1 of 10</div>
+                    <div class="question-text">What is "Personal Data" as defined under the DPDP Act 2023?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(1, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">Only financial information</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(1, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">Any data that can identify a living individual</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(1, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">Only government-issued ID numbers</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(1, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">Only medical records</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback1"></div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="question-slide" data-question="2">
+                    <div class="question-number-badge">Question 2 of 10</div>
+                    <div class="question-text">Which of the following is considered "Sensitive Personal Data"?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(2, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">Your favorite color</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(2, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">Your work email address</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(2, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">Your biometric fingerprints</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(2, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">The city you live in</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback2"></div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="question-slide" data-question="3">
+                    <div class="question-number-badge">Question 3 of 10</div>
+                    <div class="question-text">What is the primary principle of "Purpose Limitation" in data privacy?
+                    </div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(3, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">Collect as much data as possible</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(3, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">Data should only be used for the purpose it was collected</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(3, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">Share data with all departments</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(3, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">Keep data indefinitely</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback3"></div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="question-slide" data-question="4">
+                    <div class="question-number-badge">Question 4 of 10</div>
+                    <div class="question-text">Under the DPDP Act, what is required before processing personal data?
+                    </div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(4, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">Government approval</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(4, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">Free, specific, informed, and unambiguous consent</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(4, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">Payment from the data subject</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(4, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">Nothing, consent is optional</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback4"></div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="question-slide" data-question="5">
+                    <div class="question-number-badge">Question 5 of 10</div>
+                    <div class="question-text">What is the "Right to Erasure" also known as?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(5, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">Right to Copy</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(5, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">Right to be Forgotten</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(5, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">Right to Access</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(5, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">Right to Portability</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback5"></div>
+                </div>
+
+                <!-- Question 6 -->
+                <div class="question-slide" data-question="6">
+                    <div class="question-number-badge">Question 6 of 10</div>
+                    <div class="question-text">What does "Data Minimization" mean?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(6, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">Delete all data immediately after collection</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(6, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">Collect only the minimum data necessary for the purpose</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(6, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">Compress data to save storage</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(6, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">Store data in small files</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback6"></div>
+                </div>
+
+                <!-- Question 7 -->
+                <div class="question-slide" data-question="7">
+                    <div class="question-number-badge">Question 7 of 10</div>
+                    <div class="question-text">Who is a "Data Fiduciary" under the DPDP Act?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(7, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">The person whose data is being collected</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(7, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">The entity that determines the purpose and means of processing
+                            </div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(7, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">A government officer</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(7, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">A data storage company</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback7"></div>
+                </div>
+
+                <!-- Question 8 -->
+                <div class="question-slide" data-question="8">
+                    <div class="question-number-badge">Question 8 of 10</div>
+                    <div class="question-text">What should you do if you suspect a data breach?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(8, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">Wait and see if it gets worse</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(8, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">Ignore it if no harm is visible</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(8, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">Report it immediately to your data protection officer</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(8, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">Delete all evidence</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback8"></div>
+                </div>
+
+                <!-- Question 9 -->
+                <div class="question-slide" data-question="9">
+                    <div class="question-number-badge">Question 9 of 10</div>
+                    <div class="question-text">What is the maximum penalty for significant data breaches under the DPDP
+                        Act 2023?</div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(9, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">₹1 Crore</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(9, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">₹50 Crore</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(9, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">₹250 Crore</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(9, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">No penalty</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback9"></div>
+                </div>
+
+                <!-- Question 10 -->
+                <div class="question-slide" data-question="10">
+                    <div class="question-number-badge">Question 10 of 10</div>
+                    <div class="question-text">Before transferring personal data outside India, what must be ensured?
+                    </div>
+                    <div class="options-container">
+                        <div class="option-card" onclick="selectAnswer(10, 'a', this)">
+                            <div class="option-letter">A</div>
+                            <div class="option-text">Nothing special is required</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(10, 'b', this)">
+                            <div class="option-letter">B</div>
+                            <div class="option-text">The recipient country is not on the restricted list and adequate
+                                protections exist</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(10, 'c', this)">
+                            <div class="option-letter">C</div>
+                            <div class="option-text">Just get verbal approval from the data subject</div>
+                        </div>
+                        <div class="option-card" onclick="selectAnswer(10, 'd', this)">
+                            <div class="option-letter">D</div>
+                            <div class="option-text">Cross-border transfers are always prohibited</div>
+                        </div>
+                    </div>
+                    <div class="feedback-message" id="feedback10"></div>
+                </div>
+
+                <div class="quiz-navigation">
+                    <button class="quiz-nav-btn secondary" id="prevBtn" onclick="prevQuestion()" disabled>←
+                        Previous</button>
+                    <button class="quiz-nav-btn primary" id="nextBtn" onclick="nextQuestion()" disabled>Next →</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
+        import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../supabase-config.js';
+
+        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        const answers = {
+            1: 'b', 2: 'c', 3: 'b', 4: 'b', 5: 'b',
+            6: 'b', 7: 'b', 8: 'c', 9: 'c', 10: 'b'
+        };
+
+        const explanations = {
+            1: { correct: 'Correct! Personal data is any data that can identify a living individual.', incorrect: 'Incorrect. Personal data means any data that can identify a living individual.' },
+            2: { correct: 'Correct! Biometric data like fingerprints is considered sensitive personal data.', incorrect: 'Incorrect. Biometric fingerprints are classified as sensitive personal data.' },
+            3: { correct: 'Correct! Purpose limitation means data should only be used for the collected purpose.', incorrect: 'Incorrect. Data should only be used for the specific purpose it was collected for.' },
+            4: { correct: 'Correct! The DPDP Act requires free, specific, informed, and unambiguous consent.', incorrect: 'Incorrect. Consent must be free, specific, informed, and unambiguous.' },
+            5: { correct: 'Correct! The Right to Erasure is also known as the Right to be Forgotten.', incorrect: 'Incorrect. It is called the Right to be Forgotten.' },
+            6: { correct: 'Correct! Data minimization means collecting only necessary data.', incorrect: 'Incorrect. Data minimization means collecting only the minimum data necessary.' },
+            7: { correct: 'Correct! A Data Fiduciary determines the purpose and means of processing.', incorrect: 'Incorrect. The Data Fiduciary is the entity that determines processing purpose and means.' },
+            8: { correct: 'Correct! Data breaches must be reported immediately to the DPO.', incorrect: 'Incorrect. You should report suspected breaches immediately to your DPO.' },
+            9: { correct: 'Correct! Maximum penalty under DPDP Act is ₹250 Crore.', incorrect: 'Incorrect. The maximum penalty for significant breaches is ₹250 Crore.' },
+            10: { correct: 'Correct! Cross-border transfers require adequate protections and no restrictions.', incorrect: 'Incorrect. The recipient country must not be restricted and must have adequate protections.' }
+        };
+
+        let currentQuestion = 1;
+        let userAnswers = {};
+        let answered = {};
+        const totalQuestions = 10;
+
+        function selectAnswer(questionNum, answer, element) {
+            if (answered[questionNum]) return; // Prevent re-answering
+
+            // Mark as answered
+            answered[questionNum] = true;
+            userAnswers[questionNum] = answer;
+
+            // Clear previous selections
+            const options = element.parentElement.querySelectorAll('.option-card');
+            options.forEach(opt => opt.classList.remove('selected'));
+
+            // Show correct/incorrect
+            const isCorrect = answer === answers[questionNum];
+            element.classList.add(isCorrect ? 'correct' : 'incorrect');
+
+            // Highlight correct answer if wrong
+            if (!isCorrect) {
+                options.forEach(opt => {
+                    const letter = opt.querySelector('.option-letter').textContent.toLowerCase();
+                    if (letter === answers[questionNum]) {
+                        opt.classList.add('correct');
+                    }
+                });
+            }
+
+            // Show feedback
+            const feedback = document.getElementById('feedback' + questionNum);
+            feedback.textContent = isCorrect ? explanations[questionNum].correct : explanations[questionNum].incorrect;
+            feedback.className = 'feedback-message ' + (isCorrect ? 'correct' : 'incorrect');
+
+            // Enable next button
+            document.getElementById('nextBtn').disabled = false;
+        }
+
+        function nextQuestion() {
+            if (currentQuestion < totalQuestions) {
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+                currentQuestion++;
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+                updateNavigation();
+            } else {
+                // Submit and show results
+                showResults();
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+                currentQuestion--;
+                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+                updateNavigation();
+            }
+        }
+
+        function updateNavigation() {
+            document.getElementById('prevBtn').disabled = currentQuestion === 1;
+            document.getElementById('nextBtn').disabled = !answered[currentQuestion];
+            document.getElementById('nextBtn').textContent = currentQuestion === totalQuestions ? 'Submit Quiz →' : 'Next →';
+            document.getElementById('quizProgress').style.width = (currentQuestion / totalQuestions * 100) + '%';
+        }
+
+        async function showResults() {
+            let score = 0;
+            for (let q in answers) {
+                if (userAnswers[q] === answers[q]) score++;
+            }
+
+            const passed = score >= 7; // 70% passing
+
+            // Store results
+            localStorage.setItem('dataprivacy_score', score);
+            localStorage.setItem('dataprivacy_passed', passed);
+            localStorage.setItem('dataprivacy_date', new Date().toISOString());
+
+            // Save to Supabase
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    const percentageScore = score * 10;
+                    const { error } = await supabase.from('user_progress').upsert({
+                        user_id: user.id,
+                        module_id: 'dataprivacy',
+                        status: passed ? 'completed' : 'failed',
+                        score: percentageScore,
+                        completed_at: new Date().toISOString()
+                    }, { onConflict: 'user_id,module_id' });
+
+                    if (error) {
+                        console.error('Error saving progress:', error);
+                    }
+                }
+            } catch (err) {
+                console.error('Error saving to Supabase:', err);
+            }
+
+            // Redirect to results page
+            window.location.href = 'results.html';
+        }
+
+        // Expose functions to global scope for onclick handlers
+        window.selectAnswer = selectAnswer;
+        window.nextQuestion = nextQuestion;
+        window.prevQuestion = prevQuestion;
+
+        updateNavigation();
+    </script>
+</body>
+
+</html>
