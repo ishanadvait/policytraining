@@ -61,6 +61,22 @@
         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
         import { SUPABASE_URL, SUPABASE_ANON_KEY } from './TrainingPrograms/supabase-config.js';
 
+        // Check for invite/recovery tokens and redirect to set-password page
+        (function checkForInviteTokens() {
+            const hash = window.location.hash.substring(1);
+            if (hash) {
+                const hashParams = new URLSearchParams(hash);
+                const type = hashParams.get('type');
+                const accessToken = hashParams.get('access_token');
+
+                // If this is an invite or recovery flow, redirect to set-password page
+                if (accessToken && (type === 'invite' || type === 'recovery' || type === 'signup')) {
+                    window.location.href = 'set-password.html' + window.location.hash;
+                    return;
+                }
+            }
+        })();
+
         // Initialize Supabase
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
