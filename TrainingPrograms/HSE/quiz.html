@@ -104,15 +104,10 @@
             transition: all 0.3s;
         }
 
-        .option-card:hover {
+        .option-card:hover:not(.answered) {
             border-color: #16a34a;
             background: #f0fdf4;
             transform: translateX(5px);
-        }
-
-        .option-card.selected {
-            border-color: #16a34a;
-            background: #dcfce7;
         }
 
         .option-card.correct {
@@ -139,12 +134,6 @@
             color: #64748b;
             flex-shrink: 0;
             transition: all 0.3s;
-        }
-
-        .option-card.selected .option-letter {
-            background: #16a34a;
-            border-color: #16a34a;
-            color: white;
         }
 
         .option-card.correct .option-letter {
@@ -181,7 +170,6 @@
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Raleway', sans-serif;
-            text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -212,14 +200,6 @@
             transform: none !important;
         }
 
-        .question-slide {
-            display: none;
-        }
-
-        .question-slide.active {
-            display: block;
-        }
-
         .feedback-message {
             margin-top: 20px;
             padding: 15px 20px;
@@ -242,8 +222,6 @@
             display: block;
         }
     </style>
-
-    <!-- Auth Guard -->
     <script type="module" src="../auth.js"></script>
 </head>
 
@@ -265,258 +243,7 @@
 
         <div class="quiz-main">
             <div class="quiz-card">
-                <!-- Question 1 -->
-                <div class="question-slide active" data-question="1">
-                    <div class="question-number-badge">Question 1 of 10</div>
-                    <div class="question-text">What does HSE stand for?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(1, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Health, Safety, and Environment</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(1, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">High Security Equipment</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(1, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Hazard Safety Engineering</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(1, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Human Safety Evaluation</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback1"></div>
-                </div>
-
-                <!-- Question 2 -->
-                <div class="question-slide" data-question="2">
-                    <div class="question-number-badge">Question 2 of 10</div>
-                    <div class="question-text">Which of the following is an "Ergonomic" hazard?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(2, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Poor workstation setup causing back pain</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(2, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">A spilled chemical on the floor</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(2, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">High voltage electrical wires</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(2, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">A noisy generator</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback2"></div>
-                </div>
-
-                <!-- Question 3 -->
-                <div class="question-slide" data-question="3">
-                    <div class="question-number-badge">Question 3 of 10</div>
-                    <div class="question-text">What is the first thing you should do when you discover a fire?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(3, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Try to extinguish it yourself</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(3, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Raise the alarm and evacuate</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(3, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Collect your belongings</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(3, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Take photos for documentation</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback3"></div>
-                </div>
-
-                <!-- Question 4 -->
-                <div class="question-slide" data-question="4">
-                    <div class="question-number-badge">Question 4 of 10</div>
-                    <div class="question-text">What does PPE stand for?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(4, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Personal Protective Equipment</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(4, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Private Protection Entity</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(4, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Professional Performance Evaluation</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(4, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Preventive Protection Engineering</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback4"></div>
-                </div>
-
-                <!-- Question 5 -->
-                <div class="question-slide" data-question="5">
-                    <div class="question-number-badge">Question 5 of 10</div>
-                    <div class="question-text">What should you do if you notice a safety hazard at work?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(5, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Ignore it if it doesn't affect you directly</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(5, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Report it immediately to your supervisor</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(5, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Wait for someone else to report it</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(5, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Post about it on social media</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback5"></div>
-                </div>
-
-                <!-- Question 6 -->
-                <div class="question-slide" data-question="6">
-                    <div class="question-number-badge">Question 6 of 10</div>
-                    <div class="question-text">During an emergency evacuation, you should:</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(6, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Use the elevator for faster exit</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(6, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Use stairs and proceed to the assembly point</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(6, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Go back to your desk to save files</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(6, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Wait at your desk for instructions</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback6"></div>
-                </div>
-
-                <!-- Question 7 -->
-                <div class="question-slide" data-question="7">
-                    <div class="question-number-badge">Question 7 of 10</div>
-                    <div class="question-text">Which type of fire extinguisher should be used for electrical fires?
-                    </div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(7, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Water-based extinguisher</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(7, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">CO2 or dry chemical extinguisher</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(7, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Foam extinguisher</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(7, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Any extinguisher will work</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback7"></div>
-                </div>
-
-                <!-- Question 8 -->
-                <div class="question-slide" data-question="8">
-                    <div class="question-number-badge">Question 8 of 10</div>
-                    <div class="question-text">What is the purpose of a Safety Data Sheet (SDS)?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(8, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">To track employee attendance</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(8, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">To provide information about hazardous chemicals</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(8, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">To record daily work schedules</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(8, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">To store company policies</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback8"></div>
-                </div>
-
-                <!-- Question 9 -->
-                <div class="question-slide" data-question="9">
-                    <div class="question-number-badge">Question 9 of 10</div>
-                    <div class="question-text">What is the correct order of the PASS technique for using a fire
-                        extinguisher?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(9, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Pull, Aim, Squeeze, Sweep</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(9, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Push, Aim, Spray, Sweep</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(9, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Pull, Activate, Spray, Stop</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(9, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Point, Aim, Spray, Shake</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback9"></div>
-                </div>
-
-                <!-- Question 10 -->
-                <div class="question-slide" data-question="10">
-                    <div class="question-number-badge">Question 10 of 10</div>
-                    <div class="question-text">Who is responsible for workplace safety?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(10, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Only the safety officer</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(10, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Only management</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(10, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Everyone in the workplace</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(10, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Only new employees</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback10"></div>
-                </div>
-
+                <div id="questionContainer"></div>
                 <div class="quiz-navigation">
                     <button class="quiz-nav-btn secondary" id="prevBtn" onclick="prevQuestion()" disabled>←
                         Previous</button>
@@ -532,134 +259,111 @@
 
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        const answers = {
-            1: 'a', 2: 'a', 3: 'b', 4: 'a', 5: 'b',
-            6: 'b', 7: 'b', 8: 'b', 9: 'a', 10: 'c'
-        };
+        const questionsData = [
+            { question: "What does HSE stand for?", options: ["Health, Safety, and Environment", "High Security Equipment", "Hazard Safety Engineering", "Human Safety Evaluation"], correctIndex: 0, explanation: { correct: "Correct! HSE stands for Health, Safety, and Environment.", incorrect: "Incorrect. HSE stands for Health, Safety, and Environment." } },
+            { question: "Which of the following is an \"Ergonomic\" hazard?", options: ["Poor workstation setup causing back pain", "A spilled chemical on the floor", "High voltage electrical wires", "A noisy generator"], correctIndex: 0, explanation: { correct: "Correct! Poor workstation setup is an ergonomic hazard.", incorrect: "Incorrect. Ergonomic hazards relate to workstation setup and body positioning." } },
+            { question: "What is the first thing you should do when you discover a fire?", options: ["Try to extinguish it yourself", "Raise the alarm and evacuate", "Collect your belongings", "Take photos for documentation"], correctIndex: 1, explanation: { correct: "Correct! Always raise the alarm first and evacuate safely.", incorrect: "Incorrect. The first step is to raise the alarm and evacuate." } },
+            { question: "What does PPE stand for?", options: ["Personal Protective Equipment", "Private Protection Entity", "Professional Performance Evaluation", "Preventive Protection Engineering"], correctIndex: 0, explanation: { correct: "Correct! PPE stands for Personal Protective Equipment.", incorrect: "Incorrect. PPE stands for Personal Protective Equipment." } },
+            { question: "What should you do if you notice a safety hazard at work?", options: ["Ignore it if it doesn't affect you directly", "Report it immediately to your supervisor", "Wait for someone else to report it", "Post about it on social media"], correctIndex: 1, explanation: { correct: "Correct! Report hazards immediately to your supervisor.", incorrect: "Incorrect. You should report safety hazards immediately to your supervisor." } },
+            { question: "During an emergency evacuation, you should:", options: ["Use the elevator for faster exit", "Use stairs and proceed to the assembly point", "Go back to your desk to save files", "Wait at your desk for instructions"], correctIndex: 1, explanation: { correct: "Correct! Always use stairs and proceed to the assembly point.", incorrect: "Incorrect. Never use elevators during evacuation; use stairs." } },
+            { question: "Which type of fire extinguisher should be used for electrical fires?", options: ["Water-based extinguisher", "CO2 or dry chemical extinguisher", "Foam extinguisher", "Any extinguisher will work"], correctIndex: 1, explanation: { correct: "Correct! CO2 or dry chemical extinguishers are safe for electrical fires.", incorrect: "Incorrect. Use CO2 or dry chemical extinguishers for electrical fires." } },
+            { question: "What is the purpose of a Safety Data Sheet (SDS)?", options: ["To track employee attendance", "To provide information about hazardous chemicals", "To record daily work schedules", "To store company policies"], correctIndex: 1, explanation: { correct: "Correct! SDS provides information about hazardous chemicals.", incorrect: "Incorrect. Safety Data Sheets provide information about hazardous chemicals." } },
+            { question: "What is the correct order of the PASS technique for using a fire extinguisher?", options: ["Pull, Aim, Squeeze, Sweep", "Push, Aim, Spray, Sweep", "Pull, Activate, Spray, Stop", "Point, Aim, Spray, Shake"], correctIndex: 0, explanation: { correct: "Correct! PASS = Pull, Aim, Squeeze, Sweep.", incorrect: "Incorrect. PASS stands for Pull, Aim, Squeeze, Sweep." } },
+            { question: "Who is responsible for workplace safety?", options: ["Only the safety officer", "Only management", "Everyone in the workplace", "Only new employees"], correctIndex: 2, explanation: { correct: "Correct! Workplace safety is everyone's responsibility.", incorrect: "Incorrect. Everyone in the workplace is responsible for safety." } }
+        ];
 
-        const explanations = {
-            1: { correct: 'Correct! HSE stands for Health, Safety, and Environment.', incorrect: 'Incorrect. HSE stands for Health, Safety, and Environment.' },
-            2: { correct: 'Correct! Poor workstation setup is an ergonomic hazard.', incorrect: 'Incorrect. Ergonomic hazards relate to workstation setup and body positioning.' },
-            3: { correct: 'Correct! Always raise the alarm first and evacuate safely.', incorrect: 'Incorrect. The first step is to raise the alarm and evacuate.' },
-            4: { correct: 'Correct! PPE stands for Personal Protective Equipment.', incorrect: 'Incorrect. PPE stands for Personal Protective Equipment.' },
-            5: { correct: 'Correct! Report hazards immediately to your supervisor.', incorrect: 'Incorrect. You should report safety hazards immediately to your supervisor.' },
-            6: { correct: 'Correct! Always use stairs and proceed to the assembly point.', incorrect: 'Incorrect. Never use elevators during evacuation; use stairs.' },
-            7: { correct: 'Correct! CO2 or dry chemical extinguishers are safe for electrical fires.', incorrect: 'Incorrect. Use CO2 or dry chemical extinguishers for electrical fires.' },
-            8: { correct: 'Correct! SDS provides information about hazardous chemicals.', incorrect: 'Incorrect. Safety Data Sheets provide information about hazardous chemicals.' },
-            9: { correct: 'Correct! PASS = Pull, Aim, Squeeze, Sweep.', incorrect: 'Incorrect. PASS stands for Pull, Aim, Squeeze, Sweep.' },
-            10: { correct: 'Correct! Workplace safety is everyone\'s responsibility.', incorrect: 'Incorrect. Everyone in the workplace is responsible for safety.' }
-        };
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
 
-        let currentQuestion = 1;
+        const shuffledQuestions = shuffleArray(questionsData).map(q => {
+            const optionsWithIndex = q.options.map((opt, idx) => ({ text: opt, isCorrect: idx === q.correctIndex }));
+            const shuffledOptions = shuffleArray(optionsWithIndex);
+            return { ...q, shuffledOptions, correctOptionIndex: shuffledOptions.findIndex(opt => opt.isCorrect) };
+        });
+
+        let currentQuestion = 0;
         let userAnswers = {};
         let answered = {};
-        const totalQuestions = 10;
+        const totalQuestions = shuffledQuestions.length;
 
-        function selectAnswer(questionNum, answer, element) {
-            if (answered[questionNum]) return; // Prevent re-answering
+        function renderQuestion(index) {
+            const q = shuffledQuestions[index];
+            const letters = ['A', 'B', 'C', 'D'];
+            const container = document.getElementById('questionContainer');
 
-            // Mark as answered
-            answered[questionNum] = true;
-            userAnswers[questionNum] = answer;
+            let optionsHTML = q.shuffledOptions.map((opt, i) => `
+                <div class="option-card ${answered[index] ? 'answered' : ''} ${userAnswers[index] === i ? (i === q.correctOptionIndex ? 'correct' : 'incorrect') : ''} ${answered[index] && i === q.correctOptionIndex ? 'correct' : ''}" onclick="selectAnswer(${index}, ${i}, this)">
+                    <div class="option-letter">${letters[i]}</div>
+                    <div class="option-text">${opt.text}</div>
+                </div>
+            `).join('');
 
-            // Clear previous selections
-            const options = element.parentElement.querySelectorAll('.option-card');
-            options.forEach(opt => opt.classList.remove('selected'));
-
-            // Show correct/incorrect
-            const isCorrect = answer === answers[questionNum];
-            element.classList.add(isCorrect ? 'correct' : 'incorrect');
-
-            // Highlight correct answer if wrong
-            if (!isCorrect) {
-                options.forEach(opt => {
-                    const letter = opt.querySelector('.option-letter').textContent.toLowerCase();
-                    if (letter === answers[questionNum]) {
-                        opt.classList.add('correct');
-                    }
-                });
+            let feedbackHTML = '';
+            if (answered[index]) {
+                const isCorrect = userAnswers[index] === q.correctOptionIndex;
+                feedbackHTML = `<div class="feedback-message ${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? q.explanation.correct : q.explanation.incorrect}</div>`;
             }
 
-            // Show feedback
-            const feedback = document.getElementById('feedback' + questionNum);
-            feedback.textContent = isCorrect ? explanations[questionNum].correct : explanations[questionNum].incorrect;
-            feedback.className = 'feedback-message ' + (isCorrect ? 'correct' : 'incorrect');
+            container.innerHTML = `
+                <div class="question-number-badge">Question ${index + 1} of ${totalQuestions}</div>
+                <div class="question-text">${q.question}</div>
+                <div class="options-container">${optionsHTML}</div>
+                ${feedbackHTML}
+            `;
+        }
 
-            // Enable next button
+        function selectAnswer(questionIdx, answerIdx, element) {
+            if (answered[questionIdx]) return;
+            answered[questionIdx] = true;
+            userAnswers[questionIdx] = answerIdx;
+            renderQuestion(questionIdx);
             document.getElementById('nextBtn').disabled = false;
         }
 
         function nextQuestion() {
-            if (currentQuestion < totalQuestions) {
-                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
-                currentQuestion++;
-                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
-                updateNavigation();
-            } else {
-                // Submit and show results
-                showResults();
-            }
+            if (currentQuestion < totalQuestions - 1) { currentQuestion++; renderQuestion(currentQuestion); updateNavigation(); }
+            else { showResults(); }
         }
 
         function prevQuestion() {
-            if (currentQuestion > 1) {
-                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
-                currentQuestion--;
-                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
-                updateNavigation();
-            }
+            if (currentQuestion > 0) { currentQuestion--; renderQuestion(currentQuestion); updateNavigation(); }
         }
 
         function updateNavigation() {
-            document.getElementById('prevBtn').disabled = currentQuestion === 1;
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
             document.getElementById('nextBtn').disabled = !answered[currentQuestion];
-            document.getElementById('nextBtn').textContent = currentQuestion === totalQuestions ? 'Submit Quiz →' : 'Next →';
-            document.getElementById('quizProgress').style.width = (currentQuestion / totalQuestions * 100) + '%';
+            document.getElementById('nextBtn').textContent = currentQuestion === totalQuestions - 1 ? 'Submit Quiz →' : 'Next →';
+            document.getElementById('quizProgress').style.width = ((currentQuestion + 1) / totalQuestions * 100) + '%';
         }
 
         async function showResults() {
             let score = 0;
-            for (let q in answers) {
-                if (userAnswers[q] === answers[q]) score++;
-            }
-
-            const passed = score >= 7; // 70% passing
-
-            // Store results
+            for (let i = 0; i < totalQuestions; i++) { if (userAnswers[i] === shuffledQuestions[i].correctOptionIndex) score++; }
+            const passed = score >= 7;
             localStorage.setItem('hse_score', score);
             localStorage.setItem('hse_passed', passed);
             localStorage.setItem('hse_date', new Date().toISOString());
 
-            // Save to Supabase
             try {
                 const { data: { user } } = await supabase.auth.getUser();
                 if (user) {
-                    const percentageScore = score * 10;
-                    const { error } = await supabase.from('user_progress').upsert({
-                        user_id: user.id,
-                        module_id: 'hse',
-                        status: passed ? 'completed' : 'failed',
-                        score: percentageScore,
-                        completed_at: new Date().toISOString()
-                    }, { onConflict: 'user_id,module_id' });
-
-                    if (error) {
-                        console.error('Error saving progress:', error);
-                    }
+                    const { error } = await supabase.from('user_progress').upsert({ user_id: user.id, module_id: 'hse', status: passed ? 'completed' : 'failed', score: score * 10, completed_at: new Date().toISOString() }, { onConflict: 'user_id,module_id' });
+                    if (error) console.error('Error saving progress:', error);
                 }
-            } catch (err) {
-                console.error('Error saving to Supabase:', err);
-            }
-
-            // Redirect to results page
+            } catch (err) { console.error('Error saving to Supabase:', err); }
             window.location.href = 'results.html';
         }
 
-        // Expose functions to global scope for onclick handlers
         window.selectAnswer = selectAnswer;
         window.nextQuestion = nextQuestion;
         window.prevQuestion = prevQuestion;
-
+        renderQuestion(0);
         updateNavigation();
     </script>
 </body>

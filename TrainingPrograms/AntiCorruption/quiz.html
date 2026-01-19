@@ -104,7 +104,7 @@
             transition: all 0.3s;
         }
 
-        .option-card:hover {
+        .option-card:hover:not(.answered) {
             border-color: var(--cyan);
             background: #f0f9ff;
             transform: translateX(5px);
@@ -212,14 +212,6 @@
             transform: none !important;
         }
 
-        .question-slide {
-            display: none;
-        }
-
-        .question-slide.active {
-            display: block;
-        }
-
         .feedback-message {
             margin-top: 20px;
             padding: 15px 20px;
@@ -265,263 +257,7 @@
 
         <div class="quiz-main">
             <div class="quiz-card">
-                <!-- Question 1 -->
-                <div class="question-slide active" data-question="1">
-                    <div class="question-number-badge">Question 1 of 10</div>
-                    <div class="question-text">What is the primary Indian legislation for combating corruption?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(1, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Indian Penal Code, 1860</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(1, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Prevention of Corruption Act, 1988</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(1, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Companies Act, 2013</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(1, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Right to Information Act, 2005</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback1"></div>
-                </div>
-
-                <!-- Question 2 -->
-                <div class="question-slide" data-question="2">
-                    <div class="question-number-badge">Question 2 of 10</div>
-                    <div class="question-text">Which law creates a corporate offense for "failure to prevent bribery"?
-                    </div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(2, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">US Foreign Corrupt Practices Act (FCPA)</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(2, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">UK Bribery Act, 2010</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(2, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Prevention of Corruption Act, 1988</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(2, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">None of the above</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback2"></div>
-                </div>
-
-                <!-- Question 3 -->
-                <div class="question-slide" data-question="3">
-                    <div class="question-number-badge">Question 3 of 10</div>
-                    <div class="question-text">A "kickback" is best described as:</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(3, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">A legitimate commission payment</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(3, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">A return of a portion of a payment to the person who facilitated
-                                the transaction</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(3, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">A performance bonus</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(3, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">A tax refund</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback3"></div>
-                </div>
-
-                <!-- Question 4 -->
-                <div class="question-slide" data-question="4">
-                    <div class="question-number-badge">Question 4 of 10</div>
-                    <div class="question-text">Which of the following is a red flag for potential corruption?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(4, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Requests for payments in cash or to third party accounts</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(4, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Standard invoices with detailed descriptions</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(4, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Regular competitive bidding processes</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(4, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Transparent pricing structures</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback4"></div>
-                </div>
-
-                <!-- Question 5 -->
-                <div class="question-slide" data-question="5">
-                    <div class="question-number-badge">Question 5 of 10</div>
-                    <div class="question-text">Under our company's policy, which gift is generally acceptable?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(5, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Cash gift of any amount</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(5, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Lavish entertainment trip</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(5, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Modest gift of nominal value given openly</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(5, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Gift cards to government officials</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback5"></div>
-                </div>
-
-                <!-- Question 6 -->
-                <div class="question-slide" data-question="6">
-                    <div class="question-number-badge">Question 6 of 10</div>
-                    <div class="question-text">If you suspect a violation, what should you do FIRST?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(6, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Conduct your own investigation</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(6, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Report through available channels (manager, compliance, hotline)
-                            </div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(6, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Wait to see if it happens again</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(6, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Discuss it publicly on social media</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback6"></div>
-                </div>
-
-                <!-- Question 7 -->
-                <div class="question-slide" data-question="7">
-                    <div class="question-number-badge">Question 7 of 10</div>
-                    <div class="question-text">What protection do whistleblowers receive?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(7, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">No protection - reporting is at your own risk</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(7, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Protection from retaliation when reporting in good faith</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(7, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Only protection if the report leads to prosecution</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(7, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Protection only for senior employees</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback7"></div>
-                </div>
-
-                <!-- Question 8 -->
-                <div class="question-slide" data-question="8">
-                    <div class="question-number-badge">Question 8 of 10</div>
-                    <div class="question-text">What was the combined fine paid by Siemens in 2008 for corruption
-                        violations?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(8, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">$100 million</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(8, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">$500 million</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(8, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">$1.6 billion</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(8, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">$50 million</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback8"></div>
-                </div>
-
-                <!-- Question 9 -->
-                <div class="question-slide" data-question="9">
-                    <div class="question-number-badge">Question 9 of 10</div>
-                    <div class="question-text">"Facilitation payments" are:</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(9, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Always legal and acceptable</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(9, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Small unofficial payments to speed up routine government actions
-                            </div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(9, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Standard bank transfer fees</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(9, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Government-approved service charges</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback9"></div>
-                </div>
-
-                <!-- Question 10 -->
-                <div class="question-slide" data-question="10">
-                    <div class="question-number-badge">Question 10 of 10</div>
-                    <div class="question-text">What is the "Newspaper Test"?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(10, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Checking if newspapers reported similar violations</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(10, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Asking if you'd be comfortable if your action appeared on the front
-                                page</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(10, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Publishing compliance updates in newspapers</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(10, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Reading newspapers for compliance news</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback10"></div>
-                </div>
-
-                <!-- Navigation -->
+                <div id="questionContainer"></div>
                 <div class="quiz-navigation">
                     <button class="quiz-nav-btn secondary" id="prevBtn" onclick="prevQuestion()" disabled>←
                         Previous</button>
@@ -537,105 +273,243 @@
 
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        const answers = {
-            1: 'b', 2: 'b', 3: 'b', 4: 'a', 5: 'c',
-            6: 'b', 7: 'b', 8: 'c', 9: 'b', 10: 'b'
-        };
+        const questionsData = [
+            {
+                question: "What is the primary Indian legislation for combating corruption?",
+                options: [
+                    "Indian Penal Code, 1860",
+                    "Prevention of Corruption Act, 1988",
+                    "Companies Act, 2013",
+                    "Right to Information Act, 2005"
+                ],
+                correctIndex: 1,
+                explanation: {
+                    correct: "Correct! The Prevention of Corruption Act, 1988 is India's primary anti-corruption legislation.",
+                    incorrect: "Incorrect. The correct answer is the Prevention of Corruption Act, 1988."
+                }
+            },
+            {
+                question: "Which law creates a corporate offense for \"failure to prevent bribery\"?",
+                options: [
+                    "US Foreign Corrupt Practices Act (FCPA)",
+                    "UK Bribery Act, 2010",
+                    "Prevention of Corruption Act, 1988",
+                    "None of the above"
+                ],
+                correctIndex: 1,
+                explanation: {
+                    correct: "Correct! The UK Bribery Act uniquely creates corporate liability for failure to prevent bribery.",
+                    incorrect: "Incorrect. The UK Bribery Act, 2010 creates this unique corporate offense."
+                }
+            },
+            {
+                question: "A \"kickback\" is best described as:",
+                options: [
+                    "A legitimate commission payment",
+                    "A return of a portion of a payment to the person who facilitated the transaction",
+                    "A performance bonus",
+                    "A tax refund"
+                ],
+                correctIndex: 1,
+                explanation: {
+                    correct: "Correct! A kickback is a secret return of a portion of money to the person who facilitated the deal.",
+                    incorrect: "Incorrect. A kickback is a return of a portion of a payment to the facilitator."
+                }
+            },
+            {
+                question: "Which of the following is a red flag for potential corruption?",
+                options: [
+                    "Requests for payments in cash or to third party accounts",
+                    "Standard invoices with detailed descriptions",
+                    "Regular competitive bidding processes",
+                    "Transparent pricing structures"
+                ],
+                correctIndex: 0,
+                explanation: {
+                    correct: "Correct! Requests for cash payments or third party accounts are major red flags.",
+                    incorrect: "Incorrect. Requests for payments in cash or to third party accounts are red flags."
+                }
+            },
+            {
+                question: "Under our company's policy, which gift is generally acceptable?",
+                options: [
+                    "Cash gift of any amount",
+                    "Lavish entertainment trip",
+                    "Modest gift of nominal value given openly",
+                    "Gift cards to government officials"
+                ],
+                correctIndex: 2,
+                explanation: {
+                    correct: "Correct! Modest gifts of nominal value given openly are generally acceptable.",
+                    incorrect: "Incorrect. Only modest gifts of nominal value given openly are acceptable."
+                }
+            },
+            {
+                question: "If you suspect a violation, what should you do FIRST?",
+                options: [
+                    "Conduct your own investigation",
+                    "Report through available channels (manager, compliance, hotline)",
+                    "Wait to see if it happens again",
+                    "Discuss it publicly on social media"
+                ],
+                correctIndex: 1,
+                explanation: {
+                    correct: "Correct! Always report through proper channels - never investigate on your own.",
+                    incorrect: "Incorrect. You should report through available channels first."
+                }
+            },
+            {
+                question: "What protection do whistleblowers receive?",
+                options: [
+                    "No protection - reporting is at your own risk",
+                    "Protection from retaliation when reporting in good faith",
+                    "Only protection if the report leads to prosecution",
+                    "Protection only for senior employees"
+                ],
+                correctIndex: 1,
+                explanation: {
+                    correct: "Correct! Whistleblowers are protected from retaliation when reporting in good faith.",
+                    incorrect: "Incorrect. Whistleblowers receive protection from retaliation."
+                }
+            },
+            {
+                question: "What was the combined fine paid by Siemens in 2008 for corruption violations?",
+                options: ["$100 million", "$500 million", "$1.6 billion", "$50 million"],
+                correctIndex: 2,
+                explanation: {
+                    correct: "Correct! Siemens paid a record $1.6 billion in combined fines.",
+                    incorrect: "Incorrect. Siemens paid $1.6 billion in combined fines."
+                }
+            },
+            {
+                question: "\"Facilitation payments\" are:",
+                options: [
+                    "Always legal and acceptable",
+                    "Small unofficial payments to speed up routine government actions",
+                    "Standard bank transfer fees",
+                    "Government-approved service charges"
+                ],
+                correctIndex: 1,
+                explanation: {
+                    correct: "Correct! Facilitation payments are small unofficial payments to speed up routine actions.",
+                    incorrect: "Incorrect. Facilitation payments are small unofficial payments for routine actions."
+                }
+            },
+            {
+                question: "What is the \"Newspaper Test\"?",
+                options: [
+                    "Checking if newspapers reported similar violations",
+                    "Asking if you'd be comfortable if your action appeared on the front page",
+                    "Publishing compliance updates in newspapers",
+                    "Reading newspapers for compliance news"
+                ],
+                correctIndex: 1,
+                explanation: {
+                    correct: "Correct! The Newspaper Test asks if you'd be comfortable seeing your action on the front page.",
+                    incorrect: "Incorrect. The test asks if you'd be comfortable with front page exposure."
+                }
+            }
+        ];
 
-        const explanations = {
-            1: { correct: 'Correct! The Prevention of Corruption Act, 1988 is India\'s primary anti-corruption legislation.', incorrect: 'Incorrect. The correct answer is the Prevention of Corruption Act, 1988.' },
-            2: { correct: 'Correct! The UK Bribery Act uniquely creates corporate liability for failure to prevent bribery.', incorrect: 'Incorrect. The UK Bribery Act, 2010 creates this unique corporate offense.' },
-            3: { correct: 'Correct! A kickback is a secret return of a portion of money to the person who facilitated the deal.', incorrect: 'Incorrect. A kickback is a return of a portion of a payment to the facilitator.' },
-            4: { correct: 'Correct! Requests for cash payments or third party accounts are major red flags.', incorrect: 'Incorrect. Requests for payments in cash or to third party accounts are red flags.' },
-            5: { correct: 'Correct! Modest gifts of nominal value given openly are generally acceptable.', incorrect: 'Incorrect. Only modest gifts of nominal value given openly are acceptable.' },
-            6: { correct: 'Correct! Always report through proper channels - never investigate on your own.', incorrect: 'Incorrect. You should report through available channels first.' },
-            7: { correct: 'Correct! Whistleblowers are protected from retaliation when reporting in good faith.', incorrect: 'Incorrect. Whistleblowers receive protection from retaliation.' },
-            8: { correct: 'Correct! Siemens paid a record $1.6 billion in combined fines.', incorrect: 'Incorrect. Siemens paid $1.6 billion in combined fines.' },
-            9: { correct: 'Correct! Facilitation payments are small unofficial payments to speed up routine actions.', incorrect: 'Incorrect. Facilitation payments are small unofficial payments for routine actions.' },
-            10: { correct: 'Correct! The Newspaper Test asks if you\'d be comfortable seeing your action on the front page.', incorrect: 'Incorrect. The test asks if you\'d be comfortable with front page exposure.' }
-        };
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
 
-        let currentQuestion = 1;
+        const shuffledQuestions = shuffleArray(questionsData).map(q => {
+            const optionsWithIndex = q.options.map((opt, idx) => ({
+                text: opt,
+                isCorrect: idx === q.correctIndex
+            }));
+            const shuffledOptions = shuffleArray(optionsWithIndex);
+            return {
+                ...q,
+                shuffledOptions,
+                correctOptionIndex: shuffledOptions.findIndex(opt => opt.isCorrect)
+            };
+        });
+
+        let currentQuestion = 0;
         let userAnswers = {};
         let answered = {};
-        const totalQuestions = 10;
+        const totalQuestions = shuffledQuestions.length;
 
-        function selectAnswer(questionNum, answer, element) {
-            if (answered[questionNum]) return; // Prevent re-answering
+        function renderQuestion(index) {
+            const q = shuffledQuestions[index];
+            const letters = ['A', 'B', 'C', 'D'];
+            const container = document.getElementById('questionContainer');
 
-            // Mark as answered
-            answered[questionNum] = true;
-            userAnswers[questionNum] = answer;
+            let optionsHTML = q.shuffledOptions.map((opt, i) => `
+                <div class="option-card ${answered[index] ? 'answered' : ''} ${userAnswers[index] === i ? (i === q.correctOptionIndex ? 'correct' : 'incorrect') : ''} ${answered[index] && i === q.correctOptionIndex ? 'correct' : ''}" 
+                     onclick="selectAnswer(${index}, ${i}, this)">
+                    <div class="option-letter">${letters[i]}</div>
+                    <div class="option-text">${opt.text}</div>
+                </div>
+            `).join('');
 
-            // Clear previous selections
-            const options = element.parentElement.querySelectorAll('.option-card');
-            options.forEach(opt => opt.classList.remove('selected'));
-
-            // Show correct/incorrect
-            const isCorrect = answer === answers[questionNum];
-            element.classList.add(isCorrect ? 'correct' : 'incorrect');
-
-            // Highlight correct answer if wrong
-            if (!isCorrect) {
-                options.forEach(opt => {
-                    const letter = opt.querySelector('.option-letter').textContent.toLowerCase();
-                    if (letter === answers[questionNum]) {
-                        opt.classList.add('correct');
-                    }
-                });
+            let feedbackHTML = '';
+            if (answered[index]) {
+                const isCorrect = userAnswers[index] === q.correctOptionIndex;
+                feedbackHTML = `<div class="feedback-message ${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? q.explanation.correct : q.explanation.incorrect}</div>`;
             }
 
-            // Show feedback
-            const feedback = document.getElementById('feedback' + questionNum);
-            feedback.textContent = isCorrect ? explanations[questionNum].correct : explanations[questionNum].incorrect;
-            feedback.className = 'feedback-message ' + (isCorrect ? 'correct' : 'incorrect');
+            container.innerHTML = `
+                <div class="question-number-badge">Question ${index + 1} of ${totalQuestions}</div>
+                <div class="question-text">${q.question}</div>
+                <div class="options-container">${optionsHTML}</div>
+                ${feedbackHTML}
+            `;
+        }
 
-            // Enable next button
+        function selectAnswer(questionIdx, answerIdx, element) {
+            if (answered[questionIdx]) return;
+            answered[questionIdx] = true;
+            userAnswers[questionIdx] = answerIdx;
+            renderQuestion(questionIdx);
             document.getElementById('nextBtn').disabled = false;
         }
 
         function nextQuestion() {
-            if (currentQuestion < totalQuestions) {
-                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+            if (currentQuestion < totalQuestions - 1) {
                 currentQuestion++;
-                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+                renderQuestion(currentQuestion);
                 updateNavigation();
             } else {
-                // Submit and show results
                 showResults();
             }
         }
 
         function prevQuestion() {
-            if (currentQuestion > 1) {
-                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
+            if (currentQuestion > 0) {
                 currentQuestion--;
-                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
+                renderQuestion(currentQuestion);
                 updateNavigation();
             }
         }
 
         function updateNavigation() {
-            document.getElementById('prevBtn').disabled = currentQuestion === 1;
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
             document.getElementById('nextBtn').disabled = !answered[currentQuestion];
-            document.getElementById('nextBtn').textContent = currentQuestion === totalQuestions ? 'Submit Quiz →' : 'Next →';
-            document.getElementById('quizProgress').style.width = (currentQuestion / totalQuestions * 100) + '%';
+            document.getElementById('nextBtn').textContent = currentQuestion === totalQuestions - 1 ? 'Submit Quiz →' : 'Next →';
+            document.getElementById('quizProgress').style.width = ((currentQuestion + 1) / totalQuestions * 100) + '%';
         }
 
         async function showResults() {
             let score = 0;
-            for (let q in answers) {
-                if (userAnswers[q] === answers[q]) score++;
+            for (let i = 0; i < totalQuestions; i++) {
+                if (userAnswers[i] === shuffledQuestions[i].correctOptionIndex) score++;
             }
 
-            const passed = score >= 7; // 70% passing
+            const passed = score >= 7;
 
-            // Store results
             localStorage.setItem('anticorruption_score', score);
             localStorage.setItem('anticorruption_passed', passed);
             localStorage.setItem('anticorruption_date', new Date().toISOString());
 
-            // Save to Supabase (always save, not just when passed)
             try {
                 const { data: { user } } = await supabase.auth.getUser();
                 if (user) {
@@ -648,23 +522,20 @@
                         completed_at: new Date().toISOString()
                     }, { onConflict: 'user_id,module_id' });
 
-                    if (error) {
-                        console.error('Error saving progress:', error);
-                    }
+                    if (error) console.error('Error saving progress:', error);
                 }
             } catch (err) {
                 console.error('Error saving to Supabase:', err);
             }
 
-            // Redirect to results page
             window.location.href = 'results.html';
         }
 
-        // Expose functions to global scope for onclick handlers
         window.selectAnswer = selectAnswer;
         window.nextQuestion = nextQuestion;
         window.prevQuestion = prevQuestion;
 
+        renderQuestion(0);
         updateNavigation();
     </script>
 </body>

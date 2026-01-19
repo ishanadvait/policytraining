@@ -104,15 +104,10 @@
             transition: all 0.3s;
         }
 
-        .option-card:hover {
+        .option-card:hover:not(.answered) {
             border-color: #3b82f6;
             background: #eff6ff;
             transform: translateX(5px);
-        }
-
-        .option-card.selected {
-            border-color: #3b82f6;
-            background: #dbeafe;
         }
 
         .option-card.correct {
@@ -139,12 +134,6 @@
             color: #64748b;
             flex-shrink: 0;
             transition: all 0.3s;
-        }
-
-        .option-card.selected .option-letter {
-            background: #3b82f6;
-            border-color: #3b82f6;
-            color: white;
         }
 
         .option-card.correct .option-letter {
@@ -181,7 +170,6 @@
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Raleway', sans-serif;
-            text-decoration: none;
             display: inline-flex;
             align-items: center;
             gap: 8px;
@@ -212,14 +200,6 @@
             transform: none !important;
         }
 
-        .question-slide {
-            display: none;
-        }
-
-        .question-slide.active {
-            display: block;
-        }
-
         .feedback-message {
             margin-top: 20px;
             padding: 15px 20px;
@@ -242,8 +222,6 @@
             display: block;
         }
     </style>
-
-    <!-- Auth Guard -->
     <script type="module" src="../auth.js"></script>
 </head>
 
@@ -265,260 +243,7 @@
 
         <div class="quiz-main">
             <div class="quiz-card">
-                <!-- Question 1 -->
-                <div class="question-slide active" data-question="1">
-                    <div class="question-number-badge">Question 1 of 10</div>
-                    <div class="question-text">Which of the following is the BEST practice for creating a strong
-                        password?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(1, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Using your birthdate and name</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(1, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Using a long passphrase with mixed characters</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(1, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Reusing a password from another site</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(1, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Using "password123"</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback1"></div>
-                </div>
-
-                <!-- Question 2 -->
-                <div class="question-slide" data-question="2">
-                    <div class="question-number-badge">Question 2 of 10</div>
-                    <div class="question-text">What should you do if you accidentally click a link in a suspicious
-                        email?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(2, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Ignore it and delete the email</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(2, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Report it to IT immediately and disconnect from the network</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(2, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Shut down the computer and go home</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(2, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Wait a few days to see if anything happens</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback2"></div>
-                </div>
-
-                <!-- Question 3 -->
-                <div class="question-slide" data-question="3">
-                    <div class="question-number-badge">Question 3 of 10</div>
-                    <div class="question-text">Multi-Factor Authentication (MFA) protects you primarily when:</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(3, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Your password is stolen or compromised</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(3, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">You forget your username</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(3, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">You want to log in faster</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(3, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">The internet is slow</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback3"></div>
-                </div>
-
-                <!-- Question 4 -->
-                <div class="question-slide" data-question="4">
-                    <div class="question-number-badge">Question 4 of 10</div>
-                    <div class="question-text">Under Section 70B of the IT Act, cyber incidents must be reported to
-                        CERT-In within:</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(4, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">24 Hours</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(4, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">6 Hours</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(4, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">1 Week</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(4, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">30 Days</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback4"></div>
-                </div>
-
-                <!-- Question 5 -->
-                <div class="question-slide" data-question="5">
-                    <div class="question-number-badge">Question 5 of 10</div>
-                    <div class="question-text">"Spear Phishing" is best described as:</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(5, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">A random attack on everyone</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(5, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">A targeted attack on a specific individual or company</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(5, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">A type of computer hardware</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(5, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">An antivirus software</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback5"></div>
-                </div>
-
-                <!-- Question 6 -->
-                <div class="question-slide" data-question="6">
-                    <div class="question-number-badge">Question 6 of 10</div>
-                    <div class="question-text">What is "Social Engineering" in cybersecurity?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(6, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Building social media platforms</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(6, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Manipulating people into revealing confidential information</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(6, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Designing user interfaces</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(6, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">A type of network cable</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback6"></div>
-                </div>
-
-                <!-- Question 7 -->
-                <div class="question-slide" data-question="7">
-                    <div class="question-number-badge">Question 7 of 10</div>
-                    <div class="question-text">Which of the following is a safe practice when using public Wi-Fi?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(7, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Access your bank account directly</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(7, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Share sensitive files over the network</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(7, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Use a VPN to encrypt your connection</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(7, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Disable your firewall for faster speeds</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback7"></div>
-                </div>
-
-                <!-- Question 8 -->
-                <div class="question-slide" data-question="8">
-                    <div class="question-number-badge">Question 8 of 10</div>
-                    <div class="question-text">What does "Ransomware" typically do to a victim's computer?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(8, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Speeds up the computer</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(8, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Encrypts files and demands payment for decryption</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(8, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Installs free software</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(8, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Improves internet connection</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback8"></div>
-                </div>
-
-                <!-- Question 9 -->
-                <div class="question-slide" data-question="9">
-                    <div class="question-number-badge">Question 9 of 10</div>
-                    <div class="question-text">Why is it important to regularly update software and operating systems?
-                    </div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(9, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">To get new themes and colors</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(9, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Updates are not important</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(9, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">To patch security vulnerabilities and fix bugs</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(9, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">To use more storage space</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback9"></div>
-                </div>
-
-                <!-- Question 10 -->
-                <div class="question-slide" data-question="10">
-                    <div class="question-number-badge">Question 10 of 10</div>
-                    <div class="question-text">What is the best practice for backing up important data?</div>
-                    <div class="options-container">
-                        <div class="option-card" onclick="selectAnswer(10, 'a', this)">
-                            <div class="option-letter">A</div>
-                            <div class="option-text">Keep only one copy on your computer</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(10, 'b', this)">
-                            <div class="option-letter">B</div>
-                            <div class="option-text">Follow the 3-2-1 rule: 3 copies, 2 different media, 1 offsite</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(10, 'c', this)">
-                            <div class="option-letter">C</div>
-                            <div class="option-text">Backups are not necessary</div>
-                        </div>
-                        <div class="option-card" onclick="selectAnswer(10, 'd', this)">
-                            <div class="option-letter">D</div>
-                            <div class="option-text">Email all files to yourself</div>
-                        </div>
-                    </div>
-                    <div class="feedback-message" id="feedback10"></div>
-                </div>
-
+                <div id="questionContainer"></div>
                 <div class="quiz-navigation">
                     <button class="quiz-nav-btn secondary" id="prevBtn" onclick="prevQuestion()" disabled>←
                         Previous</button>
@@ -534,134 +259,111 @@
 
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        const answers = {
-            1: 'b', 2: 'b', 3: 'a', 4: 'b', 5: 'b',
-            6: 'b', 7: 'c', 8: 'b', 9: 'c', 10: 'b'
-        };
+        const questionsData = [
+            { question: "Which of the following is the BEST practice for creating a strong password?", options: ["Using your birthdate and name", "Using a long passphrase with mixed characters", "Reusing a password from another site", "Using \"password123\""], correctIndex: 1, explanation: { correct: "Correct! Long passphrases with mixed characters are the most secure.", incorrect: "Incorrect. A long passphrase with mixed characters is the most secure option." } },
+            { question: "What should you do if you accidentally click a link in a suspicious email?", options: ["Ignore it and delete the email", "Report it to IT immediately and disconnect from the network", "Shut down the computer and go home", "Wait a few days to see if anything happens"], correctIndex: 1, explanation: { correct: "Correct! Immediately report to IT and disconnect to prevent spread.", incorrect: "Incorrect. You should report to IT immediately and disconnect from the network." } },
+            { question: "Multi-Factor Authentication (MFA) protects you primarily when:", options: ["Your password is stolen or compromised", "You forget your username", "You want to log in faster", "The internet is slow"], correctIndex: 0, explanation: { correct: "Correct! MFA provides an extra layer of protection when your password is compromised.", incorrect: "Incorrect. MFA protects you primarily when your password is stolen." } },
+            { question: "Under Section 70B of the IT Act, cyber incidents must be reported to CERT-In within:", options: ["24 Hours", "6 Hours", "1 Week", "30 Days"], correctIndex: 1, explanation: { correct: "Correct! CERT-In requires reporting within 6 hours.", incorrect: "Incorrect. The IT Act requires reporting cyber incidents to CERT-In within 6 hours." } },
+            { question: "\"Spear Phishing\" is best described as:", options: ["A random attack on everyone", "A targeted attack on a specific individual or company", "A type of computer hardware", "An antivirus software"], correctIndex: 1, explanation: { correct: "Correct! Spear phishing targets specific individuals or organizations.", incorrect: "Incorrect. Spear phishing is a targeted attack on specific individuals or companies." } },
+            { question: "What is \"Social Engineering\" in cybersecurity?", options: ["Building social media platforms", "Manipulating people into revealing confidential information", "Designing user interfaces", "A type of network cable"], correctIndex: 1, explanation: { correct: "Correct! Social engineering manipulates people to reveal confidential information.", incorrect: "Incorrect. Social engineering is manipulating people into revealing confidential information." } },
+            { question: "Which of the following is a safe practice when using public Wi-Fi?", options: ["Access your bank account directly", "Share sensitive files over the network", "Use a VPN to encrypt your connection", "Disable your firewall for faster speeds"], correctIndex: 2, explanation: { correct: "Correct! A VPN encrypts your connection on public Wi-Fi.", incorrect: "Incorrect. Using a VPN is the safest practice on public Wi-Fi." } },
+            { question: "What does \"Ransomware\" typically do to a victim's computer?", options: ["Speeds up the computer", "Encrypts files and demands payment for decryption", "Installs free software", "Improves internet connection"], correctIndex: 1, explanation: { correct: "Correct! Ransomware encrypts files and demands payment.", incorrect: "Incorrect. Ransomware encrypts your files and demands payment for decryption." } },
+            { question: "Why is it important to regularly update software and operating systems?", options: ["To get new themes and colors", "Updates are not important", "To patch security vulnerabilities and fix bugs", "To use more storage space"], correctIndex: 2, explanation: { correct: "Correct! Updates patch security vulnerabilities and fix bugs.", incorrect: "Incorrect. Updates are important to patch security vulnerabilities." } },
+            { question: "What is the best practice for backing up important data?", options: ["Keep only one copy on your computer", "Follow the 3-2-1 rule: 3 copies, 2 different media, 1 offsite", "Backups are not necessary", "Email all files to yourself"], correctIndex: 1, explanation: { correct: "Correct! The 3-2-1 rule is the best backup practice.", incorrect: "Incorrect. The 3-2-1 rule (3 copies, 2 media types, 1 offsite) is best practice." } }
+        ];
 
-        const explanations = {
-            1: { correct: 'Correct! Long passphrases with mixed characters are the most secure.', incorrect: 'Incorrect. A long passphrase with mixed characters is the most secure option.' },
-            2: { correct: 'Correct! Immediately report to IT and disconnect to prevent spread.', incorrect: 'Incorrect. You should report to IT immediately and disconnect from the network.' },
-            3: { correct: 'Correct! MFA provides an extra layer of protection when your password is compromised.', incorrect: 'Incorrect. MFA protects you primarily when your password is stolen.' },
-            4: { correct: 'Correct! CERT-In requires reporting within 6 hours.', incorrect: 'Incorrect. The IT Act requires reporting cyber incidents to CERT-In within 6 hours.' },
-            5: { correct: 'Correct! Spear phishing targets specific individuals or organizations.', incorrect: 'Incorrect. Spear phishing is a targeted attack on specific individuals or companies.' },
-            6: { correct: 'Correct! Social engineering manipulates people to reveal confidential information.', incorrect: 'Incorrect. Social engineering is manipulating people into revealing confidential information.' },
-            7: { correct: 'Correct! A VPN encrypts your connection on public Wi-Fi.', incorrect: 'Incorrect. Using a VPN is the safest practice on public Wi-Fi.' },
-            8: { correct: 'Correct! Ransomware encrypts files and demands payment.', incorrect: 'Incorrect. Ransomware encrypts your files and demands payment for decryption.' },
-            9: { correct: 'Correct! Updates patch security vulnerabilities and fix bugs.', incorrect: 'Incorrect. Updates are important to patch security vulnerabilities.' },
-            10: { correct: 'Correct! The 3-2-1 rule is the best backup practice.', incorrect: 'Incorrect. The 3-2-1 rule (3 copies, 2 media types, 1 offsite) is best practice.' }
-        };
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
 
-        let currentQuestion = 1;
+        const shuffledQuestions = shuffleArray(questionsData).map(q => {
+            const optionsWithIndex = q.options.map((opt, idx) => ({ text: opt, isCorrect: idx === q.correctIndex }));
+            const shuffledOptions = shuffleArray(optionsWithIndex);
+            return { ...q, shuffledOptions, correctOptionIndex: shuffledOptions.findIndex(opt => opt.isCorrect) };
+        });
+
+        let currentQuestion = 0;
         let userAnswers = {};
         let answered = {};
-        const totalQuestions = 10;
+        const totalQuestions = shuffledQuestions.length;
 
-        function selectAnswer(questionNum, answer, element) {
-            if (answered[questionNum]) return; // Prevent re-answering
+        function renderQuestion(index) {
+            const q = shuffledQuestions[index];
+            const letters = ['A', 'B', 'C', 'D'];
+            const container = document.getElementById('questionContainer');
 
-            // Mark as answered
-            answered[questionNum] = true;
-            userAnswers[questionNum] = answer;
+            let optionsHTML = q.shuffledOptions.map((opt, i) => `
+                <div class="option-card ${answered[index] ? 'answered' : ''} ${userAnswers[index] === i ? (i === q.correctOptionIndex ? 'correct' : 'incorrect') : ''} ${answered[index] && i === q.correctOptionIndex ? 'correct' : ''}" onclick="selectAnswer(${index}, ${i}, this)">
+                    <div class="option-letter">${letters[i]}</div>
+                    <div class="option-text">${opt.text}</div>
+                </div>
+            `).join('');
 
-            // Clear previous selections
-            const options = element.parentElement.querySelectorAll('.option-card');
-            options.forEach(opt => opt.classList.remove('selected'));
-
-            // Show correct/incorrect
-            const isCorrect = answer === answers[questionNum];
-            element.classList.add(isCorrect ? 'correct' : 'incorrect');
-
-            // Highlight correct answer if wrong
-            if (!isCorrect) {
-                options.forEach(opt => {
-                    const letter = opt.querySelector('.option-letter').textContent.toLowerCase();
-                    if (letter === answers[questionNum]) {
-                        opt.classList.add('correct');
-                    }
-                });
+            let feedbackHTML = '';
+            if (answered[index]) {
+                const isCorrect = userAnswers[index] === q.correctOptionIndex;
+                feedbackHTML = `<div class="feedback-message ${isCorrect ? 'correct' : 'incorrect'}">${isCorrect ? q.explanation.correct : q.explanation.incorrect}</div>`;
             }
 
-            // Show feedback
-            const feedback = document.getElementById('feedback' + questionNum);
-            feedback.textContent = isCorrect ? explanations[questionNum].correct : explanations[questionNum].incorrect;
-            feedback.className = 'feedback-message ' + (isCorrect ? 'correct' : 'incorrect');
+            container.innerHTML = `
+                <div class="question-number-badge">Question ${index + 1} of ${totalQuestions}</div>
+                <div class="question-text">${q.question}</div>
+                <div class="options-container">${optionsHTML}</div>
+                ${feedbackHTML}
+            `;
+        }
 
-            // Enable next button
+        function selectAnswer(questionIdx, answerIdx, element) {
+            if (answered[questionIdx]) return;
+            answered[questionIdx] = true;
+            userAnswers[questionIdx] = answerIdx;
+            renderQuestion(questionIdx);
             document.getElementById('nextBtn').disabled = false;
         }
 
         function nextQuestion() {
-            if (currentQuestion < totalQuestions) {
-                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
-                currentQuestion++;
-                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
-                updateNavigation();
-            } else {
-                // Submit and show results
-                showResults();
-            }
+            if (currentQuestion < totalQuestions - 1) { currentQuestion++; renderQuestion(currentQuestion); updateNavigation(); }
+            else { showResults(); }
         }
 
         function prevQuestion() {
-            if (currentQuestion > 1) {
-                document.querySelector(`[data-question="${currentQuestion}"]`).classList.remove('active');
-                currentQuestion--;
-                document.querySelector(`[data-question="${currentQuestion}"]`).classList.add('active');
-                updateNavigation();
-            }
+            if (currentQuestion > 0) { currentQuestion--; renderQuestion(currentQuestion); updateNavigation(); }
         }
 
         function updateNavigation() {
-            document.getElementById('prevBtn').disabled = currentQuestion === 1;
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
             document.getElementById('nextBtn').disabled = !answered[currentQuestion];
-            document.getElementById('nextBtn').textContent = currentQuestion === totalQuestions ? 'Submit Quiz →' : 'Next →';
-            document.getElementById('quizProgress').style.width = (currentQuestion / totalQuestions * 100) + '%';
+            document.getElementById('nextBtn').textContent = currentQuestion === totalQuestions - 1 ? 'Submit Quiz →' : 'Next →';
+            document.getElementById('quizProgress').style.width = ((currentQuestion + 1) / totalQuestions * 100) + '%';
         }
 
         async function showResults() {
             let score = 0;
-            for (let q in answers) {
-                if (userAnswers[q] === answers[q]) score++;
-            }
-
-            const passed = score >= 7; // 70% passing
-
-            // Store results
+            for (let i = 0; i < totalQuestions; i++) { if (userAnswers[i] === shuffledQuestions[i].correctOptionIndex) score++; }
+            const passed = score >= 7;
             localStorage.setItem('cybersecurity_score', score);
             localStorage.setItem('cybersecurity_passed', passed);
             localStorage.setItem('cybersecurity_date', new Date().toISOString());
 
-            // Save to Supabase
             try {
                 const { data: { user } } = await supabase.auth.getUser();
                 if (user) {
-                    const percentageScore = score * 10;
-                    const { error } = await supabase.from('user_progress').upsert({
-                        user_id: user.id,
-                        module_id: 'cybersecurity',
-                        status: passed ? 'completed' : 'failed',
-                        score: percentageScore,
-                        completed_at: new Date().toISOString()
-                    }, { onConflict: 'user_id,module_id' });
-
-                    if (error) {
-                        console.error('Error saving progress:', error);
-                    }
+                    const { error } = await supabase.from('user_progress').upsert({ user_id: user.id, module_id: 'cybersecurity', status: passed ? 'completed' : 'failed', score: score * 10, completed_at: new Date().toISOString() }, { onConflict: 'user_id,module_id' });
+                    if (error) console.error('Error saving progress:', error);
                 }
-            } catch (err) {
-                console.error('Error saving to Supabase:', err);
-            }
-
-            // Redirect to results page
+            } catch (err) { console.error('Error saving to Supabase:', err); }
             window.location.href = 'results.html';
         }
 
-        // Expose functions to global scope for onclick handlers
         window.selectAnswer = selectAnswer;
         window.nextQuestion = nextQuestion;
         window.prevQuestion = prevQuestion;
-
+        renderQuestion(0);
         updateNavigation();
     </script>
 </body>
