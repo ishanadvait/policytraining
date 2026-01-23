@@ -63,22 +63,90 @@
 
         // Check for invite/recovery tokens and redirect to set-password page
         (function checkForInviteTokens() {
+            // Check Hash (#)
             const hash = window.location.hash.substring(1);
-            if (hash) {
-                const hashParams = new URLSearchParams(hash);
-                const type = hashParams.get('type');
-                const accessToken = hashParams.get('access_token');
+            const hashParams = new URLSearchParams(hash);
 
-                // If this is an invite or recovery flow, redirect to set-password page
-                if (accessToken && (type === 'invite' || type === 'recovery' || type === 'signup')) {
-                    window.location.href = 'set-password.html' + window.location.hash;
+            // 1. Check for manual Invite Token (Bypass Scanners)
+            const inviteToken = hashParams.get('invite_token');
+            if (inviteToken) {
+                // Replace login UI with "Accept Invitation" button
+                document.querySelector('.login-header h1').textContent = 'Invitation Pending';
+                document.querySelector('.login-header p').textContent = 'Please confirm you want to accept this invitation.';
+                document.getElementById('loginForm').style.display = 'none';
+                document.querySelector('.forgot-password').style.display = 'none'; // Hide forgot password link
+
+                // Create container for button if needed, or append to existing container
+                const container = document.querySelector('.login-container');
+
+                const acceptBtn = document.createElement('button');
+                acceptBtn.className = 'login-btn';
+                acceptBtn.innerHTML = '<span>Accept Invitation</span><div class="spinner"></div>';
+                acceptBtn.style.marginTop = '20px';
+
+                acceptBtn.onclick = async () => {
+                    acceptBtn.classList.add('loading');
+                    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+                    const { data, error } = await supabase.auth.verifyOtp({
+                        token: inviteToken,
+                        type: 'invite'
+                    });
+
+                    if (error) {
+                        console.error('Verify error:', error);
+                        document.getElementById('errorMessage').textContent = error.message || 'Invalid or expired invitation.';
+                        document.getElementById('errorMessage').style.display = 'block';
+                        acceptBtn.classList.remove('loading');
+                    } else {
+                        // Success! Session is set. Redirect to set-password
+                        window.location.href = 'set-password.html';
+                    }
+                };
+
+                // Insert after the header or where the form was
+                container.appendChild(acceptBtn);
+                return;
+            }
+
+            // 2. Check for standard Supabase Redirects (access_token, etc)
+            if (hashParams.get('access_token') || hashParams.get('code') || hashParams.get('error') || hashParams.get('type')) {
+                window.location.href = 'set-password.html' + window.location.hash;
+                return;
+            }
+
+            // Check Query Params (?)
+            const search = window.location.search;
+            const searchParams = new URLSearchParams(search);
+            if (searchParams.get('access_token') || searchParams.get('code') || searchParams.get('error') || searchParams.get('type')) {
+                if (searchParams.get('access_token')) {
+                    window.location.href = 'set-password.html#' + search.substring(1);
                     return;
                 }
+                if (searchParams.get('code')) {
+                    window.location.href = 'set-password.html' + search;
+                    return;
+                }
+                window.location.href = 'set-password.html' + search;
+                return;
             }
         })();
 
         // Initialize Supabase
         const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Check for existing session and redirect if logged in
+        (async function checkSession() {
+            const { data: { session } } = await supabase.auth.getSession();
+            if (session) {
+                // Check if user is admin
+                const isAdmin = session.user?.user_metadata?.is_admin === true;
+                if (isAdmin) {
+                    window.location.href = 'admin/index.html';
+                } else {
+                    window.location.href = 'TrainingPrograms/index.html';
+                }
+            }
+        })();
 
         const loginForm = document.getElementById('loginForm');
         const loginBtn = document.getElementById('loginBtn');
