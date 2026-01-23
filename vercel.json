@@ -5,6 +5,10 @@
         {
             "source": "/set-password",
             "destination": "/set-password.html"
+        },
+        {
+            "source": "/admin",
+            "destination": "/admin/index.html"
         }
     ]
 }

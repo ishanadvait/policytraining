@@ -1,0 +1,133 @@
+/* Additional admin-specific styles (extends login.css) */
+.admin-container {
+    max-width: 600px;
+}
+
+.admin-header {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.logout-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: rgba(230, 57, 70, 0.1);
+    color: #E63946;
+    border: 1px solid #E63946;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.logout-btn:hover {
+    background: #E63946;
+    color: white;
+}
+
+.success-message {
+    background: #e8f5e9;
+    color: #2e7d32;
+    padding: 12px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    display: none;
+    border-left: 4px solid #2e7d32;
+}
+
+.input-hint {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 5px;
+    margin-bottom: 0;
+}
+
+/* Invitations Section */
+.invitations-section {
+    margin-top: 40px;
+    padding-top: 30px;
+    border-top: 2px solid rgba(0, 51, 102, 0.1);
+}
+
+.invitations-section h2 {
+    font-size: 1.3rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.invitations-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.invitation-item {
+    background: rgba(255, 255, 255, 0.5);
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid #0ea5e9;
+}
+
+.invitation-item.accepted {
+    border-left-color: #10b981;
+    opacity: 0.7;
+}
+
+.invitation-item.expired {
+    border-left-color: #ef5350;
+    opacity: 0.5;
+}
+
+.invitation-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.invitation-name {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.invitation-status {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    text-transform: uppercase;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.status-accepted {
+    background: #d4edda;
+    color: #155724;
+}
+
+.status-expired {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.invitation-details {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.loading-text {
+    text-align: center;
+    color: #999;
+    padding: 20px;
+}
+
+.empty-state {
+    text-align: center;
+    color: #999;
+    padding: 40px 20px;
+}

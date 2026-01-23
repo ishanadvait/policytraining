@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Portal | Ishan Policy Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../login.css">
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <!-- Background Elements (reuse from login.css) -->
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+
+    <div class="login-container admin-container">
+        <div class="logo-container">
+            <img src="../TrainingPrograms/ishantechnologies_logo.jpeg" alt="Ishan Technologies">
+        </div>
+
+        <div class="admin-header">
+            <h1>Admin Portal</h1>
+            <p>Send user invitations to the training platform</p>
+            <button id="logoutBtn" class="logout-btn">Sign Out</button>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+        <div id="successMessage" class="success-message"></div>
+
+        <!-- Invitation Form -->
+        <form id="invitationForm">
+            <div class="form-group">
+                <label for="displayName">Display Name *</label>
+                <input type="text" id="displayName" placeholder="John Doe" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address *</label>
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="john.doe@ishantechnologies.com"
+                    pattern="[a-zA-Z0-9._%+-]+@ishantechnologies\.com$"
+                    title="Must be an @ishantechnologies.com email"
+                    required>
+                <p class="input-hint">Must be @ishantechnologies.com domain</p>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number (Optional)</label>
+                <input type="tel" id="phone" placeholder="+91-9876543210">
+            </div>
+
+            <button type="submit" class="login-btn" id="submitBtn">
+                <span>Send Invitation</span>
+                <div class="spinner"></div>
+            </button>
+        </form>
+
+        <!-- Pending Invitations List -->
+        <div class="invitations-section">
+            <h2>Recent Invitations</h2>
+            <div id="invitationsList" class="invitations-list">
+                <p class="loading-text">Loading...</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="admin.js"></script>
+</body>
+</html>

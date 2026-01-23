@@ -104,10 +104,14 @@
                 if (error) throw error;
 
                 if (data.user) {
-                    // Success - Save basics to local storage for our simple guard (optional, as session helps too)
-                    // But Supabase session persistence handles most of it.
-                    // Redirect
-                    window.location.href = 'TrainingPrograms/index.html';
+                    // Check if user is admin
+                    const isAdmin = data.user?.user_metadata?.is_admin === true;
+
+                    if (isAdmin) {
+                        window.location.href = 'admin/index.html';
+                    } else {
+                        window.location.href = 'TrainingPrograms/index.html';
+                    }
                 }
 
             } catch (error) {

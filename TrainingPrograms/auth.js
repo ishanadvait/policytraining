@@ -16,6 +16,28 @@ export async function checkAuth() {
     return session;
 }
 
+// Check if user is admin
+export async function checkAdminAuth() {
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (!session) {
+        // Not logged in - Redirect to Login
+        window.location.href = '/';
+        return null;
+    }
+
+    const { data: { user } } = await supabase.auth.getUser();
+    const isAdmin = user?.user_metadata?.is_admin === true;
+
+    if (!isAdmin) {
+        // Not an admin - Redirect to training hub
+        window.location.href = '/TrainingPrograms/';
+        return null;
+    }
+
+    return { session, user };
+}
+
 // Logout Function
 export async function logout() {
     const { error } = await supabase.auth.signOut();
