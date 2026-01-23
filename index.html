@@ -69,10 +69,18 @@
 
             // 1. Check for manual Invite Token (Bypass Scanners)
             const inviteToken = hashParams.get('invite_token');
+            const inviteEmail = hashParams.get('email'); // We need email to verify the token
+
             if (inviteToken) {
                 // Replace login UI with "Accept Invitation" button
                 document.querySelector('.login-header h1').textContent = 'Invitation Pending';
-                document.querySelector('.login-header p').textContent = 'Please confirm you want to accept this invitation.';
+
+                if (inviteEmail) {
+                    document.querySelector('.login-header p').textContent = `Please confirm acceptance for ${inviteEmail}`;
+                } else {
+                    document.querySelector('.login-header p').textContent = 'Please confirm you want to accept this invitation.';
+                }
+
                 document.getElementById('loginForm').style.display = 'none';
                 document.querySelector('.forgot-password').style.display = 'none'; // Hide forgot password link
 
@@ -87,10 +95,15 @@
                 acceptBtn.onclick = async () => {
                     acceptBtn.classList.add('loading');
                     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-                    const { data, error } = await supabase.auth.verifyOtp({
+
+                    // verifyOtp requires email for the 'invite' (or signup) type
+                    const verifyParams = {
                         token: inviteToken,
-                        type: 'invite'
-                    });
+                        type: 'invite',
+                        email: inviteEmail
+                    };
+
+                    const { data, error } = await supabase.auth.verifyOtp(verifyParams);
 
                     if (error) {
                         console.error('Verify error:', error);
