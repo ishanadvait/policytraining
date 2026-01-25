@@ -354,8 +354,17 @@
         }
 
         @media print {
+            @page {
+                margin: 0;
+                size: auto;
+            }
+
             body {
                 background: white;
+                margin: 0;
+                padding: 0;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
 
             .header-bar,
@@ -365,13 +374,52 @@
             }
 
             .certificate-section {
-                display: block !important;
-                margin: 0;
+                display: flex !important;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0 !important;
+                padding: 20px !important;
+                box-sizing: border-box;
             }
 
             .certificate {
+                width: 100%;
+                max-width: 100%;
                 box-shadow: none;
+                border: 4px solid var(--navy);
+                padding: 30px;
                 page-break-inside: avoid;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                height: auto;
+            }
+
+            /* Scale down for print to ensure fit */
+            .certificate-title {
+                font-size: 2rem;
+                margin-bottom: 5px;
+            }
+
+            .certificate-recipient {
+                font-size: 2.2rem;
+                margin: 10px 0;
+                padding: 5px 20px;
+            }
+
+            .certificate-body {
+                padding: 10px 0;
+            }
+
+            .certificate-logo {
+                max-width: 120px;
+                margin-bottom: 10px;
+            }
+
+            .certificate-footer {
+                margin-top: 20px;
+                padding-top: 15px;
             }
         }
     </style>
