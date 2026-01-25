@@ -359,10 +359,15 @@
                 size: auto;
             }
 
+            html,
             body {
+                width: 100%;
+                height: 100%;
+                margin: 0 !important;
+                padding: 0 !important;
+                overflow: hidden !important;
+                /* CRITICAL: Kills the empty 2nd page */
                 background: white;
-                margin: 0;
-                padding: 0;
                 -webkit-print-color-adjust: exact;
                 print-color-adjust: exact;
             }
@@ -377,49 +382,47 @@
                 display: flex !important;
                 justify-content: center;
                 align-items: center;
+                width: 100vw;
                 height: 100vh;
                 margin: 0 !important;
-                padding: 20px !important;
-                box-sizing: border-box;
+                padding: 0 !important;
+                position: absolute;
+                top: 0;
+                left: 0;
+                background: white;
             }
 
             .certificate {
-                width: 100%;
-                max-width: 100%;
-                box-shadow: none;
+                width: 98%;
+                /* Almost full width */
+                height: 98%;
+                /* Almost full height */
+                max-width: none;
+                /* Allow it to be big */
                 border: 4px solid var(--navy);
-                padding: 30px;
-                page-break-inside: avoid;
+                padding: 40px;
+                /* Restore comfortable padding */
+                box-sizing: border-box;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
-                height: auto;
+                box-shadow: none;
             }
 
-            /* Scale down for print to ensure fit */
-            .certificate-title {
-                font-size: 2rem;
-                margin-bottom: 5px;
-            }
-
-            .certificate-recipient {
-                font-size: 2.2rem;
-                margin: 10px 0;
-                padding: 5px 20px;
-            }
-
+            /* Restore original sizes for better look, just ensure flex handles spacing */
             .certificate-body {
-                padding: 10px 0;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
             }
 
-            .certificate-logo {
-                max-width: 120px;
-                margin-bottom: 10px;
+            .certificate-title {
+                margin-top: 0;
             }
 
             .certificate-footer {
-                margin-top: 20px;
-                padding-top: 15px;
+                margin-bottom: 0;
             }
         }
     </style>
