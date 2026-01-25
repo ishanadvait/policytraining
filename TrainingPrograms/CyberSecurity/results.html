@@ -376,8 +376,7 @@
         }
     </style>
 
-    <!-- Auth Guard -->
-    <script type="module" src="../auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -463,87 +462,81 @@
         </div>
     </div>
 
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
-        import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../supabase-config.js';
+    <script>
+        const SUPABASE_URL = 'https://xrxsqivbytniuovblwqs.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeHNxaXZieXRuaXVvdmJsd3FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODE5ODYsImV4cCI6MjA4NDE1Nzk4Nn0.BzfVg0dmrbHvKtTa3p53D7ptQC-ZT5OoAJeCl8UzKHo';
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // Check if accessed from Print Certificate on completed module
         const urlParams = new URLSearchParams(window.location.search);
-        if (urlParams.get('fromCertificate') === 'true') {
-            document.getElementById('retakeQuizBtn').style.display = 'none';
+        const fromCertificate = urlParams.get('fromCertificate') === 'true';
+        if (fromCertificate) document.getElementById('retakeQuizBtn').style.display = 'none';
+
+        let score = parseInt(localStorage.getItem('cybersecurity_score') || '0');
+        let passedStr = localStorage.getItem('cybersecurity_passed');
+        let dateStr = localStorage.getItem('cybersecurity_date');
+        let quizTaken = passedStr !== null;
+        let passed = passedStr === 'true';
+
+        async function loadFromDatabase() {
+            const { data: { user } } = await sb.auth.getUser();
+            if (user && fromCertificate) {
+                const { data } = await sb.from('user_progress').select('*').eq('user_id', user.id).eq('module_id', 'cybersecurity').single();
+                if (data) { score = data.score / 10; passed = data.status === 'completed'; quizTaken = true; dateStr = data.completed_at; updateUI(); showCertificate(); }
+            }
         }
+        if (fromCertificate) loadFromDatabase();
 
-        const score = parseInt(localStorage.getItem('cybersecurity_score') || '0');
-        const passedStr = localStorage.getItem('cybersecurity_passed');
-        const dateStr = localStorage.getItem('cybersecurity_date');
-
-        const quizTaken = passedStr !== null;
-        const passed = passedStr === 'true';
-
-        document.getElementById('correctCount').textContent = score;
-        document.getElementById('incorrectCount').textContent = 10 - score;
-
-        if (!quizTaken) {
-            document.getElementById('resultIcon').textContent = '📋';
-            document.getElementById('resultTitle').textContent = 'Results Preview';
-            document.getElementById('resultTitle').className = 'result-title';
-            document.getElementById('resultTitle').style.color = '#01356f';
-            document.getElementById('resultSubtitle').textContent = 'Complete the quiz to see your actual results';
-            document.getElementById('resultMessage').textContent = 'This is a preview of the results page. Complete the quiz to see your actual score and receive your certificate.';
-            document.getElementById('certificateBtn').style.display = 'inline-flex';
-            document.getElementById('correctCount').textContent = '—';
-            document.getElementById('incorrectCount').textContent = '—';
-        } else if (passed) {
-            document.getElementById('resultIcon').textContent = '🎉';
-            document.getElementById('resultTitle').textContent = 'Congratulations!';
-            document.getElementById('resultTitle').className = 'result-title pass';
-            document.getElementById('resultSubtitle').textContent = 'You have PASSED the assessment';
-            document.getElementById('resultMessage').textContent = 'You have demonstrated a strong understanding of cybersecurity principles and best practices. Your certificate is ready below.';
-            document.getElementById('certificateBtn').style.display = 'inline-flex';
-        } else {
-            document.getElementById('resultIcon').textContent = '📚';
-            document.getElementById('resultTitle').textContent = 'Not Passed';
-            document.getElementById('resultTitle').className = 'result-title fail';
-            document.getElementById('resultSubtitle').textContent = 'You need 70% or higher to pass';
-            document.getElementById('resultMessage').textContent = 'Please review the training material and try again. You need at least 7 correct answers (70%) to pass the assessment and receive your certificate.';
-            document.getElementById('certificateBtn').style.display = 'none';
+        function updateUI() {
+            document.getElementById('correctCount').textContent = score;
+            document.getElementById('incorrectCount').textContent = 10 - score;
+            if (!quizTaken) {
+                document.getElementById('resultIcon').textContent = '📋';
+                document.getElementById('resultTitle').textContent = 'Results Preview';
+                document.getElementById('resultTitle').className = 'result-title';
+                document.getElementById('resultTitle').style.color = '#01356f';
+                document.getElementById('resultSubtitle').textContent = 'Complete the quiz to see your actual results';
+                document.getElementById('resultMessage').textContent = 'This is a preview of the results page.';
+                document.getElementById('certificateBtn').style.display = 'inline-flex';
+                document.getElementById('correctCount').textContent = '—';
+                document.getElementById('incorrectCount').textContent = '—';
+            } else if (passed) {
+                document.getElementById('resultIcon').textContent = '🎉';
+                document.getElementById('resultTitle').textContent = 'Congratulations!';
+                document.getElementById('resultTitle').className = 'result-title pass';
+                document.getElementById('resultSubtitle').textContent = 'You have PASSED the assessment';
+                document.getElementById('resultMessage').textContent = 'You have demonstrated a strong understanding of cybersecurity principles. Your certificate is ready below.';
+                document.getElementById('certificateBtn').style.display = 'inline-flex';
+            } else {
+                document.getElementById('resultIcon').textContent = '📚';
+                document.getElementById('resultTitle').textContent = 'Not Passed';
+                document.getElementById('resultTitle').className = 'result-title fail';
+                document.getElementById('resultSubtitle').textContent = 'You need 70% or higher to pass';
+                document.getElementById('resultMessage').textContent = 'Please review the training material and try again.';
+                document.getElementById('certificateBtn').style.display = 'none';
+            }
         }
+        updateUI();
 
         async function showCertificate() {
-            const { data: { user } } = await supabase.auth.getUser();
+            const { data: { user } } = await sb.auth.getUser();
             let name = 'Training Participant';
-
             if (user) {
-                if (user.user_metadata?.full_name) {
-                    name = user.user_metadata.full_name;
-                } else if (user.user_metadata?.name) {
-                    name = user.user_metadata.name;
-                } else if (user.email) {
-                    // Parse email: lastname.firstname@domain -> FirstName LastName
-                    const emailPrefix = user.email.split('@')[0];
-                    const parts = emailPrefix.split('.');
-                    if (parts.length >= 2) {
-                        const firstName = parts[1].charAt(0).toUpperCase() + parts[1].slice(1).toLowerCase();
-                        const lastName = parts[0].charAt(0).toUpperCase() + parts[0].slice(1).toLowerCase();
-                        name = `${firstName} ${lastName}`;
-                    } else {
-                        name = emailPrefix.charAt(0).toUpperCase() + emailPrefix.slice(1);
+                if (user.user_metadata?.full_name) name = user.user_metadata.full_name;
+                else if (user.user_metadata?.name) name = user.user_metadata.name;
+                else {
+                    const { data: inv } = await sb.from('invitations').select('display_name').eq('email', user.email).single();
+                    if (inv?.display_name) name = inv.display_name;
+                    else if (user.email) {
+                        const parts = user.email.split('@')[0].split('.');
+                        name = parts.length >= 2 ? parts[1].charAt(0).toUpperCase() + parts[1].slice(1) + ' ' + parts[0].charAt(0).toUpperCase() + parts[0].slice(1) : parts[0];
                     }
                 }
             }
-
             document.getElementById('recipientName').textContent = name;
             document.getElementById('certScore').textContent = (quizTaken ? score : 'N/A') + '/10';
-
             const date = dateStr ? new Date(dateStr) : new Date();
-            const options = { year: 'numeric', month: 'long', day: 'numeric' };
-            document.getElementById('completionDate').textContent = date.toLocaleDateString('en-US', options);
-
-            const certId = 'CS-' + date.getFullYear() + '-' + Math.random().toString(36).substr(2, 5).toUpperCase();
-            document.getElementById('certificateId').textContent = certId;
-
+            document.getElementById('completionDate').textContent = date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+            document.getElementById('certificateId').textContent = 'CS-' + date.getFullYear() + '-' + Math.random().toString(36).substr(2, 5).toUpperCase();
             document.getElementById('certificateSection').classList.add('visible');
             document.getElementById('certificateSection').scrollIntoView({ behavior: 'smooth' });
         }

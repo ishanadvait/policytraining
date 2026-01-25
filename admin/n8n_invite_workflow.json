@@ -1,0 +1,60 @@
+{
+    "name": "Send Training Invitation",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "invite-user",
+                "options": {}
+            },
+            "id": "webhook-trigger",
+            "name": "Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                460,
+                300
+            ],
+            "webhookId": "invite-user-webhook"
+        },
+        {
+            "parameters": {
+                "subject": "Action Required: Set Your Password for Ishan Training",
+                "html": "<!DOCTYPE html>\n<html>\n<head>\n<style>\n  body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }\n  .container { max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 8px; }\n  .btn { display: inline-block; padding: 12px 24px; background-color: #003366; color: #ffffff !important; text-decoration: none; border-radius: 5px; font-weight: bold; margin: 20px 0; }\n  .footer { font-size: 12px; color: #666; margin-top: 30px; border-top: 1px solid #eee; padding-top: 10px; }\n</style>\n</head>\n<body>\n    <div class=\"container\">\n        <h2>Welcome to Ishan Technologies, {{ $json.name }}!</h2>\n        <p>You have been invited to the Compliance Training Hub.</p>\n        <p>Your account has been created. Please click the button below to set your secure password and access your training modules:</p>\n        \n        <center>\n            <a href=\"{{ $json.invite_link }}\" class=\"btn\">Set My Password</a>\n        </center>\n        \n        <p>If the button doesn't work, copy and paste this link into your browser:</p>\n        <p style=\"background: #f5f5f5; padding: 10px; word-break: break-all; font-family: monospace;\">{{ $json.invite_link }}</p>\n        \n        <div class=\"footer\">\n            <p>This link is valid for 24 hours.<br>If you did not expect this invitation, please ignore this email.</p>\n            <p>Best regards,<br>Ishan Training Team</p>\n        </div>\n    </div>\n</body>\n</html>",
+                "toEmail": "={{ $json.email }}"
+            },
+            "id": "send-email",
+            "name": "Send Email",
+            "type": "n8n-nodes-base.emailSend",
+            "typeVersion": 2,
+            "position": [
+                680,
+                300
+            ],
+            "credentials": {
+                "smtp": {
+                    "id": "YOUR_SMTP_CREDENTIAL_ID",
+                    "name": "Outlook Account"
+                }
+            }
+        }
+    ],
+    "pinData": {},
+    "connections": {
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Send Email",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "active": true,
+    "settings": {},
+    "versionId": "1",
+    "tags": []
+}

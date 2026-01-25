@@ -5,24 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Ishan Policy Training</title>
-    <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Styles -->
     <link rel="stylesheet" href="login.css">
-    <!-- Supabase JS is loaded via module in script below, or we can use CDN for direct access -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
-    <!-- Background Elements -->
     <div class="shape shape-1"></div>
     <div class="shape shape-2"></div>
 
     <div class="login-container">
         <div class="logo-container">
-            <!-- Ensure this path is correct relative to this file. 
-                 If file is in root, TrainingPrograms is a subdir. 
-                 If logo is inside TrainingPrograms, path is 'TrainingPrograms/ishantechnologies_logo.jpeg' -->
             <img src="TrainingPrograms/ishantechnologies_logo.jpeg" alt="Ishan Technologies">
         </div>
 
@@ -55,144 +48,47 @@
         </div>
     </div>
 
-    <!-- Auth Logic -->
-    <!-- We'll create a dedicated supabase-client.js, but for simplicity we can init here or link it -->
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
-        import { SUPABASE_URL, SUPABASE_ANON_KEY } from './TrainingPrograms/supabase-config.js';
+    <script>
+        const SUPABASE_URL = 'https://xrxsqivbytniuovblwqs.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeHNxaXZieXRuaXVvdmJsd3FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODE5ODYsImV4cCI6MjA4NDE1Nzk4Nn0.BzfVg0dmrbHvKtTa3p53D7ptQC-ZT5OoAJeCl8UzKHo';
 
-        // Check for invite/recovery tokens and redirect to set-password page
-        (function checkForInviteTokens() {
-            // Check Hash (#)
-            const hash = window.location.hash.substring(1);
-            const hashParams = new URLSearchParams(hash);
-
-            // 1. Check for manual Invite Token (Bypass Scanners)
-            const inviteToken = hashParams.get('invite_token');
-            const inviteEmail = hashParams.get('email'); // We need email to verify the token
-
-            if (inviteToken) {
-                // Replace login UI with "Accept Invitation" button
-                document.querySelector('.login-header h1').textContent = 'Invitation Pending';
-
-                if (inviteEmail) {
-                    document.querySelector('.login-header p').textContent = `Please confirm acceptance for ${inviteEmail}`;
-                } else {
-                    document.querySelector('.login-header p').textContent = 'Please confirm you want to accept this invitation.';
-                }
-
-                document.getElementById('loginForm').style.display = 'none';
-                document.querySelector('.forgot-password').style.display = 'none'; // Hide forgot password link
-
-                // Create container for button if needed, or append to existing container
-                const container = document.querySelector('.login-container');
-
-                const acceptBtn = document.createElement('button');
-                acceptBtn.className = 'login-btn';
-                acceptBtn.innerHTML = '<span>Accept Invitation</span><div class="spinner"></div>';
-                acceptBtn.style.marginTop = '20px';
-
-                acceptBtn.onclick = async () => {
-                    acceptBtn.classList.add('loading');
-                    const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-                    // verifyOtp requires email for the 'invite' (or signup) type
-                    const verifyParams = {
-                        token: inviteToken,
-                        type: 'invite',
-                        email: inviteEmail
-                    };
-
-                    const { data, error } = await supabase.auth.verifyOtp(verifyParams);
-
-                    if (error) {
-                        console.error('Verify error:', error);
-                        document.getElementById('errorMessage').textContent = error.message || 'Invalid or expired invitation.';
-                        document.getElementById('errorMessage').style.display = 'block';
-                        acceptBtn.classList.remove('loading');
-                    } else {
-                        // Success! Session is set. Redirect to set-password
-                        window.location.href = 'set-password.html';
-                    }
-                };
-
-                // Insert after the header or where the form was
-                container.appendChild(acceptBtn);
-                return;
-            }
-
-            // 2. Check for standard Supabase Redirects (access_token, etc)
-            if (hashParams.get('access_token') || hashParams.get('code') || hashParams.get('error') || hashParams.get('type')) {
-                window.location.href = 'set-password.html' + window.location.hash;
-                return;
-            }
-
-            // Check Query Params (?)
-            const search = window.location.search;
-            const searchParams = new URLSearchParams(search);
-            if (searchParams.get('access_token') || searchParams.get('code') || searchParams.get('error') || searchParams.get('type')) {
-                if (searchParams.get('access_token')) {
-                    window.location.href = 'set-password.html#' + search.substring(1);
-                    return;
-                }
-                if (searchParams.get('code')) {
-                    window.location.href = 'set-password.html' + search;
-                    return;
-                }
-                window.location.href = 'set-password.html' + search;
-                return;
-            }
-        })();
-
-        // Initialize Supabase
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-        // Check for existing session and redirect if logged in
-        (async function checkSession() {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (session) {
-                // Check if user is admin
-                const isAdmin = session.user?.user_metadata?.is_admin === true;
-                if (isAdmin) {
-                    window.location.href = 'admin/index.html';
-                } else {
-                    window.location.href = 'TrainingPrograms/index.html';
-                }
-            }
-        })();
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         const loginForm = document.getElementById('loginForm');
         const loginBtn = document.getElementById('loginBtn');
         const errorMsg = document.getElementById('errorMessage');
 
+        // Check for existing session
+        async function checkSession() {
+            const { data: { session } } = await sb.auth.getSession();
+            if (session) {
+                const isAdmin = session.user?.user_metadata?.is_admin === true ||
+                               session.user?.email === 'gautam.advait@ishantechnologies.com';
+                window.location.href = isAdmin ? 'admin/index.html' : 'TrainingPrograms/index.html';
+            }
+        }
+        checkSession();
+
+        // Handle login
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
-            // Loading State
             loginBtn.classList.add('loading');
             errorMsg.style.display = 'none';
             loginBtn.disabled = true;
 
             try {
-                const { data, error } = await supabase.auth.signInWithPassword({
-                    email: email,
-                    password: password,
-                })
+                const { data, error } = await sb.auth.signInWithPassword({ email, password });
 
                 if (error) throw error;
 
                 if (data.user) {
-                    // Check if user is admin
-                    const isAdmin = data.user?.user_metadata?.is_admin === true;
-
-                    if (isAdmin) {
-                        window.location.href = 'admin/index.html';
-                    } else {
-                        window.location.href = 'TrainingPrograms/index.html';
-                    }
+                    const isAdmin = data.user?.user_metadata?.is_admin === true ||
+                                   data.user?.email === 'gautam.advait@ishantechnologies.com';
+                    window.location.href = isAdmin ? 'admin/index.html' : 'TrainingPrograms/index.html';
                 }
 
             } catch (error) {

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Invitation | Ishan Policy Training</title>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="login.css">
+    <style>
+        .verify-content {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .verify-content h1 {
+            color: #003366;
+            margin-bottom: 10px;
+        }
+
+        .verify-content p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .verify-btn {
+            background: linear-gradient(135deg, #003366 0%, #004d99 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .verify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 51, 102, 0.3);
+        }
+
+        .verify-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+
+        .error-text {
+            color: #c62828;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+
+    <div class="login-container">
+        <div class="logo-container">
+            <img src="TrainingPrograms/ishantechnologies_logo.jpeg" alt="Ishan Technologies">
+        </div>
+
+        <div class="verify-content">
+            <h1>Welcome to Ishan Policy Training</h1>
+            <p>Click the button below to verify your invitation and set up your account.</p>
+
+            <button id="verifyBtn" class="verify-btn">Verify & Continue</button>
+
+            <p id="errorText" class="error-text" style="display: none;"></p>
+        </div>
+    </div>
+
+    <script>
+        const verifyBtn = document.getElementById('verifyBtn');
+        const errorText = document.getElementById('errorText');
+
+        // Get the encoded link from URL
+        const params = new URLSearchParams(window.location.search);
+        const encodedLink = params.get('link');
+
+        if (!encodedLink) {
+            verifyBtn.style.display = 'none';
+            errorText.textContent = 'Invalid invitation link. Please contact your administrator.';
+            errorText.style.display = 'block';
+        }
+
+        verifyBtn.addEventListener('click', () => {
+            verifyBtn.disabled = true;
+            verifyBtn.textContent = 'Verifying...';
+
+            try {
+                // Decode and redirect to actual Supabase verification link
+                const actualLink = atob(encodedLink);
+                window.location.href = actualLink;
+            } catch (e) {
+                errorText.textContent = 'Invalid link format. Please request a new invitation.';
+                errorText.style.display = 'block';
+                verifyBtn.disabled = false;
+                verifyBtn.textContent = 'Verify & Continue';
+            }
+        });
+    </script>
+</body>
+
+</html>

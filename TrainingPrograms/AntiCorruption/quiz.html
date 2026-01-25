@@ -235,8 +235,7 @@
         }
     </style>
 
-    <!-- Auth Guard -->
-    <script type="module" src="../auth.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
 <body>
@@ -267,11 +266,10 @@
         </div>
     </div>
 
-    <script type="module">
-        import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm'
-        import { SUPABASE_URL, SUPABASE_ANON_KEY } from '../supabase-config.js';
-
-        const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    <script>
+        const SUPABASE_URL = 'https://xrxsqivbytniuovblwqs.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhyeHNxaXZieXRuaXVvdmJsd3FzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Njg1ODE5ODYsImV4cCI6MjA4NDE1Nzk4Nn0.BzfVg0dmrbHvKtTa3p53D7ptQC-ZT5OoAJeCl8UzKHo';
+        const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
         const questionsData = [
             {
@@ -511,10 +509,10 @@
             localStorage.setItem('anticorruption_date', new Date().toISOString());
 
             try {
-                const { data: { user } } = await supabase.auth.getUser();
+                const { data: { user } } = await sb.auth.getUser();
                 if (user) {
                     const percentageScore = score * 10;
-                    const { error } = await supabase.from('user_progress').upsert({
+                    const { error } = await sb.from('user_progress').upsert({
                         user_id: user.id,
                         module_id: 'anticorruption',
                         status: passed ? 'completed' : 'failed',
