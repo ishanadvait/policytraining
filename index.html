@@ -58,12 +58,47 @@
         const loginBtn = document.getElementById('loginBtn');
         const errorMsg = document.getElementById('errorMessage');
 
+        // Check for session in URL (LTI Launch)
+        async function handleLtiLaunch() {
+            const hash = window.location.hash;
+            if (hash && hash.includes('access_token')) {
+                const params = new URLSearchParams(hash.substring(1));
+                const access_token = params.get('access_token');
+                const refresh_token = params.get('refresh_token') || access_token; // Fallback
+
+                if (access_token) {
+                    const { data, error } = await sb.auth.setSession({
+                        access_token,
+                        refresh_token
+                    });
+
+                    if (!error && data.session) {
+                        // Clear hash
+                        window.history.replaceState(null, '', window.location.pathname);
+
+                        // Check custom claim for LTI to maybe redirect elsewhere or log
+                        const isLti = data.session.user?.app_metadata?.provider === 'moodle_lti';
+                        console.log('LTI Login:', isLti);
+
+                        // Proceed to redirect
+                        const isAdmin = data.session.user?.user_metadata?.is_admin === true ||
+                            data.session.user?.email === 'gautam.advait@ishantechnologies.com';
+                        window.location.href = isAdmin ? 'admin/index.html' : 'TrainingPrograms/index.html';
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         // Check for existing session
         async function checkSession() {
+            if (await handleLtiLaunch()) return;
+
             const { data: { session } } = await sb.auth.getSession();
             if (session) {
                 const isAdmin = session.user?.user_metadata?.is_admin === true ||
-                               session.user?.email === 'gautam.advait@ishantechnologies.com';
+                    session.user?.email === 'gautam.advait@ishantechnologies.com';
                 window.location.href = isAdmin ? 'admin/index.html' : 'TrainingPrograms/index.html';
             }
         }
@@ -87,7 +122,7 @@
 
                 if (data.user) {
                     const isAdmin = data.user?.user_metadata?.is_admin === true ||
-                                   data.user?.email === 'gautam.advait@ishantechnologies.com';
+                        data.user?.email === 'gautam.advait@ishantechnologies.com';
                     window.location.href = isAdmin ? 'admin/index.html' : 'TrainingPrograms/index.html';
                 }
 

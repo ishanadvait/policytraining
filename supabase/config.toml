@@ -1,0 +1,33 @@
+
+[functions.lti-jwks]
+enabled = true
+verify_jwt = true
+import_map = "./functions/lti-jwks/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/lti-jwks/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/lti-jwks/*.html" ]
+
+[functions.lti-oidc]
+enabled = true
+verify_jwt = true
+import_map = "./functions/lti-oidc/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/lti-oidc/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/lti-oidc/*.html" ]
+
+[functions.lti-launch]
+enabled = true
+verify_jwt = true
+import_map = "./functions/lti-launch/deno.json"
+# Uncomment to specify a custom file path to the entrypoint.
+# Supported file extensions are: .ts, .js, .mjs, .jsx, .tsx
+entrypoint = "./functions/lti-launch/index.ts"
+# Specifies static files to be bundled with the function. Supports glob patterns.
+# For example, if you want to serve static HTML pages in your function:
+# static_files = [ "./functions/lti-launch/*.html" ]
