@@ -1,4 +1,5 @@
 {
+    "name": "ishan-policy-training",
     "cleanUrls": false,
     "trailingSlash": true,
     "rewrites": [
