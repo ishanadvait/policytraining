@@ -3,13 +3,34 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 serve(async (req) => {
   const url = new URL(req.url);
-  const iss = url.searchParams.get("iss");
-  const login_hint = url.searchParams.get("login_hint");
-  const target_link_uri = url.searchParams.get("target_link_uri");
-  const lti_message_hint = url.searchParams.get("lti_message_hint");
+  let iss, login_hint, target_link_uri, lti_message_hint;
+
+  console.log("Request Method:", req.method);
+
+  // Handle GET (Standard)
+  if (req.method === "GET") {
+    iss = url.searchParams.get("iss");
+    login_hint = url.searchParams.get("login_hint");
+    target_link_uri = url.searchParams.get("target_link_uri");
+    lti_message_hint = url.searchParams.get("lti_message_hint");
+  }
+  // Handle POST (Some LMS configurations)
+  else if (req.method === "POST") {
+    try {
+      const formData = await req.formData();
+      iss = formData.get("iss") as string;
+      login_hint = formData.get("login_hint") as string;
+      target_link_uri = formData.get("target_link_uri") as string;
+      lti_message_hint = formData.get("lti_message_hint") as string;
+    } catch (e) {
+      console.error("Error parsing POST body:", e);
+    }
+  }
+
+  console.log("OIDC Params:", { iss, login_hint, target_link_uri });
 
   if (!iss || !login_hint || !target_link_uri) {
-    return new Response("Missing required parameters", { status: 400 });
+    return new Response("Missing required parameters: iss, login_hint, or target_link_uri. Method: " + req.method, { status: 400 });
   }
 
   // Configuration from Environment Variables

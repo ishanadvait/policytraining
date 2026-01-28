@@ -40,3 +40,4 @@ npm-debug.log
 .claude/
 .shared/
 mcp_config.json
+.vercel
