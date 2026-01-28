@@ -76,12 +76,14 @@ Deno.serve(async (req) => {
       throw createError
     }
 
+    const frontendUrl = Deno.env.get('FRONTEND_URL') ?? 'http://localhost:8082'
+
     // 3. Generate invite link with redirect to set-password page
     const { data: linkData, error: linkError } = await supabaseAdmin.auth.admin.generateLink({
       type: 'magiclink',
       email,
       options: {
-        redirectTo: 'http://localhost:8082/set-password.html'
+        redirectTo: `${frontendUrl}/set-password.html`
       }
     })
 
@@ -92,7 +94,7 @@ Deno.serve(async (req) => {
     const encodedLink = btoa(actualLink)
 
     // Create protected link that requires button click
-    const inviteLink = `http://localhost:8082/verify-invite.html?link=${encodeURIComponent(encodedLink)}`
+    const inviteLink = `${frontendUrl}/verify-invite.html?link=${encodeURIComponent(encodedLink)}`
 
     // 4. Send to n8n webhook
     const webhookUrl = Deno.env.get('N8N_WEBHOOK_URL')
